@@ -7,7 +7,7 @@
 
 bank_raw_data:
   type: pandas.CSVDataset
-  filepath: data/01_raw/bank_data.csv
+  filepath: data/01_raw/aug_train.csv
   # load_args:
   #   sep: ';'
 

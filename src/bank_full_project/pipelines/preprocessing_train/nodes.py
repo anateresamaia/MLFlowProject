@@ -100,6 +100,7 @@ def clean_data(
         data: Cleaned data
     """
     #remove some outliers
+    #VAMOS DEFINIR TRESHOLDS DE OUTLIERS PARA CITY_DEV_INDEX PARA VALORES MENORES DE 0.4 E TRAINING HOUR MAIOR DE 350
     df_transformed = data.copy()
 
     describe_to_dict = df_transformed.describe().to_dict()
