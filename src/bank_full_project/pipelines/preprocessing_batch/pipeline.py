@@ -13,7 +13,7 @@ def create_pipeline(**kwargs) -> Pipeline:
         [
             node(
                 func= feature_engineer,
-                inputs=["ana_data","encoder_transform"],
+                inputs=["aug_test","encoder_transform"],
                 outputs= "preprocessed_batch_data",
                 name="preprocessed_batch",
             ),

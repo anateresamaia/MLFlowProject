@@ -15,14 +15,14 @@ def create_pipeline(**kwargs) -> Pipeline:
 
             node(
                 func= clean_data,
-                inputs="ref_data",
+                inputs="ingestion",
                 outputs= ["ref_data_cleaned","reporting_data_train"],
                 name="clean_data",
             ),
             node(
                 func= feature_engineer,
                 inputs="ref_data_cleaned",
-                outputs= ["preprocessed_training_data","encoder_transform"],
+                outputs= ["preprocessed_initial_data"],
                 name="preprocessed_training",
             ),
 

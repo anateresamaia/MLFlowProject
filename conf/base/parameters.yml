@@ -1,7 +1,7 @@
-target_column: "y"
+target_column: "target"
 to_feature_store: False
-test_fraction: 0.3
-random_state: 2021
+test_fraction: 0.2
+random_state: 42
 run_name: "full_project"
 use_feature_selection: False
 feature_selection: "rfe"
