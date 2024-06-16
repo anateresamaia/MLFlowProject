@@ -4,7 +4,7 @@
 # ignore all local configuration
 conf/local/**
 !conf/local/.gitkeep
-.telemetry
+
 
 # ignore potentially sensitive credentials files
 conf/**/*credentials*
@@ -93,15 +93,6 @@ pip-log.txt
 pip-delete-this-directory.txt
 
 # Unit test / coverage reports
-htmlcov/
-.tox/
-.coverage
-.coverage.*
-.cache
-nosetests.xml
-coverage.xml
-*.cover
-.hypothesis/
 
 # Translations
 *.mo

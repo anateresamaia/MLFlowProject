@@ -1,0 +1,82 @@
+{
+  "evaluation_parameters": {},
+  "meta": {
+    "active_batch_definition": {
+      "batch_identifiers": {},
+      "data_asset_name": "test",
+      "data_connector_name": "fluent",
+      "datasource_name": "bank_datasource"
+    },
+    "batch_markers": {
+      "ge_load_time": "20240531T011411.333976Z",
+      "pandas_data_fingerprint": "7ba5d378bbdc70905639b7934f8c1001"
+    },
+    "batch_spec": {
+      "batch_data": "PandasDataFrame"
+    },
+    "checkpoint_id": null,
+    "checkpoint_name": "checkpoint_marital",
+    "expectation_suite_name": "Bank",
+    "great_expectations_version": "0.17.23",
+    "run_id": {
+      "run_name": null,
+      "run_time": "2024-05-31T02:14:11.283113+01:00"
+    },
+    "validation_id": null,
+    "validation_time": "20240531T011411.391547Z"
+  },
+  "results": [
+    {
+      "exception_info": {
+        "exception_message": null,
+        "exception_traceback": null,
+        "raised_exception": false
+      },
+      "expectation_config": {
+        "expectation_type": "expect_column_distinct_values_to_be_in_set",
+        "kwargs": {
+          "batch_id": "bank_datasource-test",
+          "column": "marital",
+          "value_set": [
+            "married",
+            "single",
+            "divorced"
+          ]
+        },
+        "meta": {}
+      },
+      "meta": {},
+      "result": {
+        "details": {
+          "value_counts": [
+            {
+              "count": 5207,
+              "value": "divorced"
+            },
+            {
+              "count": 27214,
+              "value": "married"
+            },
+            {
+              "count": 12790,
+              "value": "single"
+            }
+          ]
+        },
+        "observed_value": [
+          "divorced",
+          "married",
+          "single"
+        ]
+      },
+      "success": true
+    }
+  ],
+  "statistics": {
+    "evaluated_expectations": 1,
+    "success_percent": 100.0,
+    "successful_expectations": 1,
+    "unsuccessful_expectations": 0
+  },
+  "success": true
+}
