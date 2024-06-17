@@ -22,15 +22,15 @@
 from typing import Dict
 from kedro.pipeline import Pipeline, pipeline
 
-from bank_full_project.pipelines import (
+from jobchange_full_project.pipelines import (
     ingestion as data_ingestion,
     data_unit_tests as data_tests,
-    preprocessing_train as preprocess_train,
+    preprocessing_initial as preprocess_initial,
     split_train_pipeline as split_train,
+    proprocessing_train_val,
+    feature_selection as feature_selection_pipeline,
     model_selection as model_selection_pipeline,
     model_train as model_train_pipeline,
-    feature_selection as feature_selection_pipeline,
-    split_data,
     preprocessing_batch,
     model_predict,
     data_drift
@@ -45,12 +45,12 @@ def register_pipelines() -> Dict[str, Pipeline]:
     """
     ingestion_pipeline = data_ingestion.create_pipeline()
     data_unit_tests_pipeline = data_tests.create_pipeline()
-    split_data_pipeline = split_data.create_pipeline()
-    preprocess_train_pipeline = preprocess_train.create_pipeline()
+    preprocess_initial_pipeline = preprocess_initial.create_pipeline()
     split_train_pipeline = split_train.create_pipeline()
-    model_train = model_train_pipeline.create_pipeline()
-    model_selection = model_selection_pipeline.create_pipeline()
+    preprocess_train_val_pipeline = proprocessing_train_val.create_pipeline()
     feature_selection = feature_selection_pipeline.create_pipeline()
+    model_selection = model_selection_pipeline.create_pipeline()
+    model_train = model_train_pipeline.create_pipeline()
     preprocess_batch_pipeline = preprocessing_batch.create_pipeline()
     model_predict_pipeline = model_predict.create_pipeline()
     data_drift_pipeline = data_drift.create_pipeline()
@@ -58,15 +58,15 @@ def register_pipelines() -> Dict[str, Pipeline]:
     return {
         "ingestion": ingestion_pipeline,
         "data_unit_tests": data_unit_tests_pipeline,
-        "split_data": split_data_pipeline,
-        "preprocess_train": preprocess_train_pipeline,
+        "preprocess_initial": preprocess_initial_pipeline,
         "split_train": split_train_pipeline,
+        "preprocess_train_val": preprocess_train_val_pipeline,
+        "feature_selection": feature_selection,
         "model_selection": model_selection,
         "model_train": model_train,
-        "feature_selection":feature_selection,
-        "production_full_train_process" : preprocess_train_pipeline + split_train_pipeline + model_train,
+        "production_full_train_process" : preprocess_initial_pipeline + split_train_pipeline + preprocess_train_val_pipeline + model_train,
         "preprocess_batch": preprocess_batch_pipeline,
         "inference" : model_predict_pipeline,
         "production_full_prediction_process" : preprocess_batch_pipeline + model_predict_pipeline,
-        "data_drift_pipeline" : data_drift_pipeline
+        "data_drift_pipeline": data_drift_pipeline
     }
