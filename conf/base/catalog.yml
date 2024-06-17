@@ -5,49 +5,115 @@
 
 
 
-bank_raw_data:
+aug_train:
   type: pandas.CSVDataset
   filepath: data/01_raw/aug_train.csv
   # load_args:
   #   sep: ';'
 
 
-bank_additional_data:
+aug_test:
   type: pandas.CSVDataset
-  filepath: data/01_raw/bank_data_additional.csv
+  filepath: data/01_raw/aug_test.csv
 
 
 ingested_data:
   type: pandas.CSVDataset
   filepath: data/02_intermediate/ingested_data.csv
 
-
-ref_data:
+reporting_tests:
   type: pandas.CSVDataset
-  filepath: data/02_intermediate/ref_data.csv
+  filepath: data/08_reporting/reporting_tests.csv
 
-ana_data:
+ref_data_clean:
   type: pandas.CSVDataset
-  filepath: data/02_intermediate/ana_data.csv
+  filepath: data/03_primary/ref_data_cleaned.csv
+
+reporting_data_train:
+  type: pandas.CSVDataset
+  filepath: data/08_reporting/reporting_data_train.csv
 
 
+preprocessed_initial_data:
+  type: pandas.CSVDataset
+  filepath: data/03_primary/preprocessed_initial_data.csv
+
+numerical_features:
+  type: pickle.PickleDataset
+  filepath: data/03_primary/numerical_features.pkl
+
+categorical_features:
+  type: pickle.PickleDataset
+  filepath: data/03_primary/categorical_features.pkl
+
+X_train_data:
+  type: pandas.CSVDataset
+  filepath: data/03_primary/X_train_data.csv
+
+X_val_data:
+  type: pandas.CSVDataset
+  filepath: data/03_primary/X_val_data.csv
+
+y_train_data:
+  type: pickle.PickleDataset
+  filepath: data/03_primary/y_train_data.pkl
+
+y_val_data:
+  type: pickle.PickleDataset
+  filepath: data/03_primary/y_val_data.pkl
+
+#preprocessed train e val
+X_train:
+  type: pandas.CSVDataset
+  filepath: data/05_model_input/X_train.csv
+
+y_train:
+  type: pickle.PickleDataset
+  filepath: data/05_model_input/y_train.pkl
+
+X_val:
+  type: pandas.CSVDataset
+  filepath: data/05_model_input/X_val.csv
+
+y_val:
+  type: pickle.PickleDataset
+  filepath: data/05_model_input/y_val.pkl
+
+#Transformers
+encoder:
+  type: kedro_mlflow.io.artifacts.MlflowArtifactDataset
+  dataset:
+    type: pickle.PickleDataset
+    filepath: data/04_feature/encoder.pkl
+
+scaler:
+  type: kedro_mlflow.io.artifacts.MlflowArtifactDataset
+  dataset:
+    type: pickle.PickleDataset
+    filepath: data/04_feature/scaler.pkl
+
+knn_imputer:
+  type: kedro_mlflow.io.artifacts.MlflowArtifactDataset
+  dataset:
+    type: pickle.PickleDataset
+    filepath: data/04_feature/knn_imputer.pkl
+
+"preprocessed_batch_data":
+  type: pandas.CSVDataset
+  filepath: data/03_primary/"preprocessed_batch_data".csv
+
+
+"""
 reporting_data_train:
   type: kedro_mlflow.io.artifacts.MlflowArtifactDataset
   dataset:
     type: json.JSONDataset
     filepath: data/08_reporting/reporting_data_train.json
 
-reporting_tests:
-  type: pandas.CSVDataset
-  filepath: data/08_reporting/data_tests.csv
-
 preprocessed_training_data:
   type: pandas.CSVDataset
   filepath: data/03_primary/preprocessed_train_data.csv
 
-preprocessed_batch_data:
-  type: pandas.CSVDataset
-  filepath: data/03_primary/preprocessed_batch_data.csv
 
 encoder_transform:
   type: kedro_mlflow.io.artifacts.MlflowArtifactDataset
@@ -106,4 +172,4 @@ output_plot:
   type: kedro_mlflow.io.artifacts.MlflowArtifactDataset
   dataset:
     type: matplotlib.MatplotlibWriter
-    filepath: data/08_reporting/shap_plot.png
+    filepath: data/08_reporting/shap_plot.png """

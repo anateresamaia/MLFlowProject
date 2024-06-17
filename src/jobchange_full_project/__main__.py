@@ -1,5 +1,5 @@
-"""bank_full_project file for ensuring the package is executable
-as `bank-full-project` and `python -m bank_full_project`
+"""jobchange_full_project file for ensuring the package is executable
+as `bank-full-project` and `python -m jobchange_full_project`
 """
 import importlib
 from pathlib import Path

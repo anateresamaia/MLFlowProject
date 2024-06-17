@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 
 
-# bank_full_project documentation build
+# jobchange_full_project documentation build
 # configuration file, created by sphinx-quickstart.
 #
 # This file is execfile()d with the current directory set to its
@@ -25,7 +25,7 @@ from bank_full_project import __version__ as release
 
 # -- Project information -----------------------------------------------------
 
-project = "bank_full_project"
+project = "jobchange_full_project"
 author = "Kedro"
 
 # The short X.Y version.
@@ -147,8 +147,8 @@ latex_elements = {
 latex_documents = [
     (
         master_doc,
-        "bank_full_project.tex",
-        "bank_full_project Documentation",
+        "jobchange_full_project.tex",
+        "jobchange_full_project Documentation",
         "Kedro",
         "manual",
     )
@@ -161,8 +161,8 @@ latex_documents = [
 man_pages = [
     (
         master_doc,
-        "bank_full_project",
-        "bank_full_project Documentation",
+        "jobchange_full_project",
+        "jobchange_full_project Documentation",
         [author],
         1,
     )
@@ -176,11 +176,11 @@ man_pages = [
 texinfo_documents = [
     (
         master_doc,
-        "bank_full_project",
-        "bank_full_project Documentation",
+        "jobchange_full_project",
+        "jobchange_full_project Documentation",
         author,
-        "bank_full_project",
-        "Project bank_full_project codebase.",
+        "jobchange_full_project",
+        "Project jobchange_full_project codebase.",
         "Data-Science",
     )
 ]

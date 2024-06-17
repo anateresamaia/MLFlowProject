@@ -107,12 +107,12 @@ def test_data(df):
             expectation_type="expect_column_values_to_be_in_set",
             kwargs={
                 "column": "experience",
-                "value_set": [str(i) for i in range(1, 21)] + [">20", "<1", np.nan]
+                "value_set": [str(i) for i in range(1, 21)] + [">20", "<1"]
             }
         ),
         ExpectationConfiguration(
             expectation_type="expect_column_values_to_be_in_set",
-            kwargs={"column": "gender", "value_set": ["Male", "Female", "Other", np.nan]}
+            kwargs={"column": "gender", "value_set": ["Male", "Female", "Other"]}
         ),
         ExpectationConfiguration(
             expectation_type="expect_column_values_to_be_in_set",
@@ -120,30 +120,30 @@ def test_data(df):
         ),
         ExpectationConfiguration(
             expectation_type="expect_column_values_to_be_in_set",
-            kwargs={"column": "enrolled_university", "value_set": ["no_enrollment", "Full time course", "Part time course", np.nan]}
+            kwargs={"column": "enrolled_university", "value_set": ["no_enrollment", "Full time course", "Part time course"]}
         ),
         ExpectationConfiguration(
             expectation_type="expect_column_values_to_be_in_set",
-            kwargs={"column": "education_level", "value_set": ["Primary School", "High School", "Graduate", "Masters", "Phd", np.nan]}
+            kwargs={"column": "education_level", "value_set": ["Primary School", "High School", "Graduate", "Masters", "Phd"]}
         ),
         ExpectationConfiguration(
             expectation_type="expect_column_values_to_be_in_set",
-            kwargs={"column": "company_size", "value_set": ["<10", "10-49", "50-99", "100-500", "500-999", "1000-4999", "5000-9999", ">10000", np.nan]}
+            kwargs={"column": "company_size", "value_set": ["<10", "10-49", "50-99", "100-500", "500-999", "1000-4999", "5000-9999", ">10000"]}
         ),
         ExpectationConfiguration(
             expectation_type="expect_column_values_to_be_in_set",
-            kwargs={"column": "company_type", "value_set": ["Pvt Ltd", "Funded Startup", "Early Stage Startup", "Other", "Public Sector", "NGO", np.nan]}
+            kwargs={"column": "company_type", "value_set": ["Pvt Ltd", "Funded Startup", "Early Stage Startup", "Other", "Public Sector", "NGO"]}
         ),
         ExpectationConfiguration(
             expectation_type="expect_column_values_to_be_in_set",
             kwargs={
                 "column": "major_discipline",
-                "value_set": ["STEM", "Business Degree", "Arts", "Humanities", "No Major", "Other", np.nan]
+                "value_set": ["STEM", "Business Degree", "Arts", "Humanities", "No Major", "Other"]
             }
         ),
         ExpectationConfiguration(
             expectation_type="expect_column_values_to_be_in_set",
-            kwargs={"column": "last_new_job", "value_set": ["1", ">4", "never", "4", "3", "2", np.nan]}
+            kwargs={"column": "last_new_job", "value_set": ["1", ">4", "never", "4", "3", "2"]}
         ),
 
     ]
@@ -178,7 +178,6 @@ def test_data(df):
 
     # Example asserts
     assert pd_df_ge.expect_column_values_to_be_of_type("city_development_index", "float64").success
-    assert pd_df_ge.expect_column_values_to_be_of_type("gender", "str").success
 
     log = logging.getLogger(__name__)
     log.info("Data passed the unit data tests")

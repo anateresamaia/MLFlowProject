@@ -5,7 +5,7 @@ import warnings
 warnings.filterwarnings("ignore", category=Warning)
 
 from sklearn.ensemble import RandomForestClassifier, GradientBoostingClassifier
-from src.bank_full_project.pipelines.model_selection.nodes import model_selection
+from src.jobchange_full_project.pipelines.model_selection.nodes import model_selection
 
 @pytest.mark.slow
 def test_model_selection():

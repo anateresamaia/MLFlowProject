@@ -302,5 +302,5 @@ def ingestion(
 project = hopsworks.login(
         api_key_value=credentials_input["FS_API_KEY"], project=credentials_input["FS_PROJECT_NAME"]
     )
-fs = project.get_feature_store(name='nrosa_test_featurestore')
+fs = project.get_feature_store(name='nrosa_test_featurestore') #nome do projeto
 fg_lamp_features = fs.get_feature_group('lamp_features', version=1)
