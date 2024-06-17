@@ -128,7 +128,7 @@ def feature_engineer(data: pd.DataFrame) -> pd.DataFrame:
     numerical_features = data.select_dtypes(exclude=['object', 'string', 'category']).columns.tolist()
     categorical_features = data.select_dtypes(include=['object', 'string', 'category']).columns.tolist()
 
-    return data
+    return data, categorical_features, numerical_features
 
 
 

@@ -22,7 +22,7 @@ def create_pipeline(**kwargs) -> Pipeline:
             node(
                 func= feature_engineer,
                 inputs="ref_data_cleaned",
-                outputs= ["preprocessed_initial_data"],
+                outputs= ["preprocessed_initial_data", "categorical_features", "numerical_features"],
                 name="preprocessed_training",
             ),
 

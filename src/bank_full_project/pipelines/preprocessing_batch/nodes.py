@@ -1,14 +1,14 @@
-"""
-This is a boilerplate pipeline
-generated using Kedro 0.18.8
-"""
 import logging
 from typing import Any, Dict, Tuple
 import numpy as np
 import pandas as pd
 from pathlib import Path
-from sklearn.preprocessing import OneHotEncoder , LabelEncoder
 
+import pandas as pd
+from sklearn.preprocessing import MinMaxScaler
+from sklearn.impute import KNNImputer
+import category_encoders as ce
+from typing import Tuple, List
 
 from kedro.config import OmegaConfigLoader
 from kedro.framework.project import settings
@@ -28,113 +28,117 @@ generated using Kedro 0.18.8
 
 import logging
 from typing import Any, Dict, Tuple
-import numpy as np
-import pandas as pd
-from sklearn.preprocessing import OneHotEncoder , LabelEncoder
 
 
-def age_(data):
-    
-    data['bin_age'] = 0  
-    data.loc[(data['age'] <= 35) & (data['age'] >= 18),'bin_age'] = 1
-    data.loc[(data['age'] <= 60) & (data['age'] >= 36),'bin_age'] = 2
-    data.loc[data['age'] >=61,'bin_age'] = 3
-    
+
+def clean_data(data: pd.DataFrame) -> Tuple[pd.DataFrame, Dict, Dict]:
+    """
+    Cleans the data by removing outliers, setting the index, and imputing missing values.
+
+    Args:
+        data: Data containing features and target.
+
+    Returns:
+        data: Cleaned data
+    """
+    df_transformed = data.copy()
+
+    # Describe the data before transformation
+    describe_to_dict = df_transformed.describe(include='all').to_dict()
+
+    # Remove outliers for city_development_index and training_hours
+    df_transformed = df_transformed[df_transformed['city_development_index'] >= 0.4]
+    df_transformed = df_transformed[df_transformed['training_hours'] <= 350]
+
+    # Set enrollee_id as the index
+    df_transformed.set_index('enrollee_id', inplace=True)
+
+    # Impute missing values
+    df_transformed['gender'].fillna('Unknown', inplace=True)
+    df_transformed['experience'].fillna(0, inplace=True)
+    df_transformed['company_size'].fillna('Not Applicable', inplace=True)
+    df_transformed['company_type'].fillna('Not Applicable', inplace=True)
+
+    # Describe the data after transformation
+    describe_to_dict_verified = df_transformed.describe(include='all').to_dict()
+
+    return df_transformed, describe_to_dict_verified
+
+
+def experience_(data):
+    def experience_bin(exp):
+        if pd.isna(exp):
+            return 'NaN'
+        elif exp == '>20':
+            return '>20'
+        elif exp == '<1':
+            return '0-5'
+        else:
+            exp = int(exp)
+            if exp <= 5:
+                return '0-5'
+            elif exp <= 10:
+                return '6-10'
+            elif exp <= 15:
+                return '11-15'
+            elif exp <= 20:
+                return '16-20'
+
+    data['experience_bin'] = data['experience'].apply(experience_bin)
     return data
 
-def campaign_(data):
-    
-    
-    data.loc[data['campaign'] == 1,'campaign'] = 1
-    data.loc[(data['campaign'] >= 2) & (data['campaign'] <= 3),'campaign'] = 2
-    data.loc[data['campaign'] >= 4,'campaign'] = 3
-    
-    return data
 
-def duration_(data):
-    
-    data['t_min'] = 0
-    data['t_e_min'] = 0
-    data['e_min']=0
-    data.loc[data['duration'] <= 5,'t_min'] = 1
-    data.loc[(data['duration'] > 5) & (data['duration'] <= 10),'t_e_min'] = 1
-    data.loc[data['duration'] > 10,'e_min'] = 1
-    
-    return data
+def city_development_index_(data):
+    city_dev_bins = [0, 0.4, 0.5, 0.6, 0.7, 0.8, 0.85, 0.9, 0.95, 1.0]
+    city_dev_labels = ['<0.4', '0.4-0.5', '0.5-0.6', '0.6-0.7', '0.7-0.8', '0.8-0.85', '0.85-0.9', '0.9-0.95',
+                       '0.95-1.0']
 
-def pdays_(data):
-    data['pdays_not_contacted'] = 0
-    data['months_passed'] = 0
-    data.loc[data['pdays'] == -1 ,'pdays_not_contacted'] = 1
-    data['months_passed'] = data['pdays']/30
-    data.loc[(data['months_passed'] >= 0) & (data['months_passed'] <=2) ,'months_passed'] = 1
-    data.loc[(data['months_passed'] > 2) & (data['months_passed'] <=6),'months_passed'] = 2
-    data.loc[data['months_passed'] > 6 ,'months_passed'] = 3
-    
+    data['city_development_index_bin'] = pd.cut(data['city_development_index'], bins=city_dev_bins,
+                                                labels=city_dev_labels, include_lowest=True)
     return data
 
 
-def balance_(data):
-    data['Neg_Balance'] = 0
-    data['No_Balance'] = 0
-    data['Pos_Balance'] = 0
-    data.loc[~data['balance']<0,'Neg_Balance'] = 1
-    data.loc[data['balance'] < 1,'bin_Balance'] = 0
-    data.loc[(data['balance'] >= 1) & (data['balance'] < 100),'bin_Balance'] = 1
-    data.loc[(data['balance'] >= 100) & (data['balance'] < 500),'bin_Balance'] = 2
-    data.loc[(data['balance'] >= 500) & (data['balance'] < 2000),'bin_Balance'] = 3
-    data.loc[(data['balance'] >= 2000) & (data['balance'] < 5000),'bin_Balance'] = 4
-    data.loc[data['balance'] >= 5000,'bin_Balance'] = 5
-    
+def training_hours_(data):
+    training_hours_bins = [0, 20, 40, 60, 80, 100, 150, 200, 250, 300, 350, float('inf')]
+    training_hours_labels = ['0-20', '20-40', '40-60', '60-80', '80-100', '100-150', '150-200', '200-250', '250-300',
+                             '300-350', '>350']
+
+    data['training_hours_bin'] = pd.cut(data['training_hours'], bins=training_hours_bins, labels=training_hours_labels,
+                                        include_lowest=True)
     return data
 
 
-def feature_engineer( data: pd.DataFrame, OH_encoder) -> pd.DataFrame:
-    
-    log = logging.getLogger(__name__)
+def feature_engineer(data: pd.DataFrame) -> pd.DataFrame:
+    # Bin the features
+    data = experience_(data)
+    data = city_development_index_(data)
+    data = training_hours_(data)
 
-    df = data.copy()
-    df.fillna(-9999,inplace=True)
-    le = LabelEncoder()
+    # Drop the original columns used for binning
+    data.drop(['experience', 'city_development_index', 'training_hours'], axis=1, inplace=True)
 
-    df = campaign_(df)
-    df = age_(df)
-    df = balance_(df)
-    if "y" in df.columns:
-        df["y"] = df["y"].map({"no":0, "yes":1})
-    
-    #new profiling feature
-    # In this step we should start to think on feature store
-    df["mean_balance_bin_age"] = df.groupby("bin_age")["balance"].transform("mean")
-    df["std_balance_bin_age"] = df.groupby("bin_age")["balance"].transform("std")
-    df["z_score_bin_age"] = (df["mean_balance_bin_age"] - df["balance"])/(df["std_balance_bin_age"])
-    #df['day_of_week'] = le.fit_transform(df['day_of_week'])
-    df['month'] = le.fit_transform(df['month'])
-    
-    
-    
-    numerical_features = df.select_dtypes(exclude=['object','string','category']).columns.tolist()
-    categorical_features = df.select_dtypes(include=['object','string','category']).columns.tolist()
+    # Calculate mean balance for each training_hours_bin and assign it to every row in that bin
+    data["mean_balance_bin_training"] = data.groupby("training_hours_bin")["balance"].transform("mean")
+    # Calculate standard deviation of balance for each training_hours_bin and assign it to every row in that bin
+    data["std_balance_bin_training"] = data.groupby("training_hours_bin")["balance"].transform("std")
 
-    #Exercise create an assert for numerical and categorical features
-    
+    return data
 
-    OH_cols= pd.DataFrame(OH_encoder.transform(df[categorical_features]))
+def additional_preprocessing(data: pd.DataFrame, encoder: ce.TargetEncoder, scaler: MinMaxScaler, knn_imputer: KNNImputer,
+                             categorical_features: List[str], numerical_features: List[str]) -> pd.DataFrame:
+    # Apply the encoder to the test set
+    for column in categorical_features:
+        data[column] = encoder.transform(data[[column]])
 
-    # Adding column names to the encoded data set.
-    OH_cols.columns = OH_encoder.get_feature_names_out(categorical_features)
+    # Apply the scaler to the numerical features
+    for column in numerical_features:
+        data[column] = scaler.transform(data[[column]])
 
-    # One-hot encoding removed index; put it back
-    OH_cols.index = df.index
+    # Apply the KNN imputer to the test set
+    columns_to_impute = ['enrolled_university', 'education_level', 'major_discipline', 'last_new_job']
+    for column in columns_to_impute:
+        test_data = data[[column]]
+        test_imputed = knn_imputer.transform(test_data)
+        data[column] = test_imputed
 
-    # Remove categorical columns (will replace with one-hot encoding)
-    num_df = df.drop(categorical_features, axis=1)
-
-    # Add one-hot encoded columns to numerical features
-    df_final = pd.concat([num_df, OH_cols], axis=1)
-
-    log.info(f"The final dataframe has {len(df_final.columns)} columns.")
-
-    return df_final
-
-
+    return data
