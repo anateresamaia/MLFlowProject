@@ -21,7 +21,7 @@ import re
 
 from kedro.framework.cli.utils import find_stylesheets
 
-from bank_full_project import __version__ as release
+from jobchange_full_project import __version__ as release
 
 # -- Project information -----------------------------------------------------
 
@@ -119,7 +119,7 @@ html_show_sourcelink = False
 # -- Options for HTMLHelp output ---------------------------------------------
 
 # Output file base name for HTML help builder.
-htmlhelp_basename = "bank_full_projectdoc"
+htmlhelp_basename = "jobchange_full_projectdoc"
 
 # -- Options for LaTeX output ------------------------------------------------
 
