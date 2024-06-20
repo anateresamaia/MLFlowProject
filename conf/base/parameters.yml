@@ -1,5 +1,5 @@
 target_column: "target"
-to_feature_store: False
+to_feature_store: True
 test_fraction: 0.2
 random_state: 42
 run_name: "full_project"

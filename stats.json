@@ -1,1 +1,1 @@
-{"X_train_data": {"rows": 25044, "columns": 48, "file_size": 5487915}, "X_test_data": {"rows": 10734, "columns": 48, "file_size": 2352149}, "y_train_data": {"rows": 25044, "columns": 1, "file_size": 75135}, "y_test_data": {"rows": 10734, "columns": 1, "file_size": 32205}}
+{"aug_train": {"rows": 19158, "columns": 14, "file_size": 1980304}, "ingested_data": {"rows": 19158, "columns": 15, "file_size": 2054655}}

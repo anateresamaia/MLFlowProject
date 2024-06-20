@@ -1,0 +1,15 @@
+artifact_uri: file:///C:/Users/diogo/PycharmProjects/MLOpsProject/mlruns/895353677791098344/bd9c8d1e8c614020a67bb9e1daeaf9e0/artifacts
+end_time: 1718913441787
+entry_point_name: ''
+experiment_id: '895353677791098344'
+lifecycle_stage: active
+run_id: bd9c8d1e8c614020a67bb9e1daeaf9e0
+run_name: ingestion
+run_uuid: bd9c8d1e8c614020a67bb9e1daeaf9e0
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1718913437847
+status: 4
+tags: []
+user_id: diogo
