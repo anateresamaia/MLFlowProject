@@ -36,7 +36,7 @@ loggers:
   kedro:
     level: INFO
 
-  bank_full_project:
+  jobchange_full_project:
     level: INFO
 
 root:
