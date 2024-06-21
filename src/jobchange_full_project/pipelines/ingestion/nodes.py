@@ -22,20 +22,20 @@ conf_loader = OmegaConfigLoader(conf_source=conf_path)
 credentials = conf_loader["credentials"]
 
 
-logger = logging.getLogger(__name__)
+logger = logging.getLogger(_name_)
 
 def build_expectation_suite(expectation_suite_name: str, feature_group: str) -> ExpectationSuite:
     """
     Builder used to retrieve an instance of the validation expectation suite.
-    
+
     Args:
         expectation_suite_name (str): A dictionary with the feature group name and the respective version.
         feature_group (str): Feature group used to construct the expectations.
-             
+
     Returns:
         ExpectationSuite: A dictionary containing all the expectations for this particular feature group.
     """
-    
+
     expectation_suite_job_change = ExpectationSuite(
         expectation_suite_name=expectation_suite_name
     )
@@ -154,14 +154,14 @@ def to_feature_store(
         group_name (str): Name of the feature group.
         feature_group_version (int): Version of the feature group.
         description (str): Description for the feature group.
-        group_description (dict): Description of each feature of the feature group. 
+        group_description (dict): Description of each feature of the feature group.
         validation_expectation_suite (ExpectationSuite): group of expectations to check data.
         SETTINGS (dict): Dictionary with the settings definitions to connect to the project.
-        
+
     Returns:
         A dictionary with the feature view version, feature view name and training dataset feature version.
-    
-    
+
+
     """
     # Connect to feature store.
     project = hopsworks.login(
@@ -220,14 +220,14 @@ def ingestion(
         group_name (str): Name of the feature group.
         feature_group_version (int): Version of the feature group.
         description (str): Description for the feature group.
-        group_description (dict): Description of each feature of the feature group. 
+        group_description (dict): Description of each feature of the feature group.
         validation_expectation_suite (ExpectationSuite): group of expectations to check data.
         SETTINGS (dict): Dictionary with the settings definitions to connect to the project.
-        
+
     Returns:
-       
-    
-    
+
+
+
     """
 
     logger.info(f"The dataset contains {len(df1.columns)} columns.")
@@ -245,7 +245,7 @@ def ingestion(
     numerical_feature_descriptions = []
     categorical_feature_descriptions = []
     target_feature_descriptions = []
-    
+
     df1_numeric = df1[["index"] + numerical_features]
     df1_categorical = df1[["index"] + categorical_features]
     df1_target = df1[["index"] + [parameters["target_column"]]]
@@ -292,3 +292,4 @@ def ingestion(
    # )
 #fs = project.get_feature_store(name='nrosa_test_featurestore') #nome do projeto
 #fg_lamp_features = fs.get_feature_group('lamp_features', version=1)
+
