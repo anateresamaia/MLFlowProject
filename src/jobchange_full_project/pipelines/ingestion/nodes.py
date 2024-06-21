@@ -39,9 +39,7 @@ def build_expectation_suite(expectation_suite_name: str, feature_group: str) -> 
     expectation_suite_job_change = ExpectationSuite(
         expectation_suite_name=expectation_suite_name
     )
-    
 
-    # numerical features
     # numerical features
     if feature_group == 'numerical_features':
         # training_hours should be of type int64 and have a minimum value of 0
@@ -76,7 +74,7 @@ def build_expectation_suite(expectation_suite_name: str, feature_group: str) -> 
     if feature_group == 'categorical_features':
         # Define the feature and its allowed values
         feature_values = {
-            "city": ['city_103', 'city_40', 'city_21', 'city_115', 'city_162', 'city_176', 'city_160',
+            "city": ['city_103','city_40','city_21','city_115','city_162', 'city_176', 'city_160',
                      'city_46', 'city_61', 'city_114', 'city_13', 'city_159', 'city_102', 'city_67',
                      'city_100', 'city_16', 'city_71', 'city_104', 'city_64', 'city_101', 'city_83',
                      'city_105', 'city_73', 'city_75', 'city_41', 'city_11', 'city_93', 'city_90',
@@ -94,26 +92,26 @@ def build_expectation_suite(expectation_suite_name: str, feature_group: str) -> 
                      'city_111', 'city_30', 'city_1', 'city_140', 'city_179', 'city_55', 'city_14',
                      'city_42', 'city_107', 'city_18', 'city_139', 'city_180', 'city_166', 'city_121',
                      'city_129', 'city_8', 'city_31', 'city_171'],
-            "gender": ['Male', 'Female', 'Other', np.nan],
+            "gender": ['Male', 'Female', 'Other'],
             "relevent_experience": ['Has relevent experience', 'No relevent experience'],
-            "enrolled_university": ['no_enrollment', 'Full time course', 'Part time course', np.nan],
-            "education_level": ['Graduate', 'Masters', 'High School', 'Phd', 'Primary School', np.nan],
-            "major_discipline": ['STEM', 'Business Degree', 'Arts', 'Humanities', 'No Major', 'Other', np.nan],
+            "enrolled_university": ['no_enrollment', 'Full time course', 'Part time course'],
+            "education_level": ['Graduate', 'Masters', 'High School', 'Phd', 'Primary School'],
+            "major_discipline": ['STEM', 'Business Degree', 'Arts', 'Humanities', 'No Major', 'Other'],
             "experience": ['>20', '15', '5', '<1', '11', '13', '7', '17', '2', '16', '1', '4', '10',
-                           '14', '18', '19', '12', '3', '6', '9', '8', '20', np.nan],
-            "company_size": ['50-99', '<10', '10000+', '5000-9999', '1000-4999', '10/49', '100-500', '500-999', np.nan],
-            "company_type": ['Pvt Ltd', 'Funded Startup', 'Early Stage Startup', 'Other', 'Public Sector', 'NGO', np.nan],
-            "last_new_job": ['1', '>4', 'never', '4', '3', '2', np.nan]
+                           '14', '18', '19', '12', '3', '6', '9', '8', '20'],
+            "company_size": ['50-99', '<10', '10000+', '5000-9999', '1000-4999', '10/49', '100-500', '500-999'],
+            "company_type": ['Pvt Ltd', 'Funded Startup', 'Early Stage Startup', 'Other', 'Public Sector', 'NGO'],
+            "last_new_job": ['1', '>4', 'never', '4', '3', '2']
         }
 
-        # Add expectations for each feature
-        for feature, value_set in feature_values.items():
-            expectation_suite_job_change.add_expectation(
-                ExpectationConfiguration(
-                    expectation_type="expect_column_distinct_values_to_be_in_set",
-                    kwargs={"column": feature, "value_set": value_set},
-                )
-            )
+        #Add expectations for each feature
+        # for feature, value_set in feature_values.items():
+        #     expectation_suite_job_change.add_expectation(
+        #         ExpectationConfiguration(
+        #             expectation_type="expect_column_distinct_values_to_be_in_set",
+        #             kwargs={"column": feature, "value_set": value_set},
+        #         )
+        #     )
 
     if feature_group == 'target':
         # Ensure the column values are of type float
@@ -177,7 +175,6 @@ def to_feature_store(
         version=feature_group_version,
         description=description,
         primary_key=["index"],
-        event_time="datetime",
         online_enabled=False,
         expectation_suite=validation_expectation_suite,
     )
@@ -211,7 +208,6 @@ def to_feature_store(
 
 def ingestion(
     df1: pd.DataFrame,
-    df2: pd.DataFrame,
     parameters: Dict[str, Any]):
 
     """
@@ -234,27 +230,13 @@ def ingestion(
     
     """
 
-    common_columns= []
-    for i in df2.columns.tolist():
-        if i in df1.columns.tolist():
-            common_columns.append(i)
-    
-    assert len(common_columns)>0, "Wrong data collected"
+    logger.info(f"The dataset contains {len(df1.columns)} columns.")
 
-    df_full = pd.merge(df1,df2, how = 'left',  on = common_columns  )
+    numerical_features = df1.select_dtypes(exclude=['object','string','category']).columns.tolist()
+    categorical_features = ['city','gender', 'relevent_experience','enrolled_university','education_level','major_discipline','experience','company_size','company_type','last_new_job']
 
-    df_full= df_full.drop_duplicates()
-
-
-    logger.info(f"The dataset contains {len(df_full.columns)} columns.")
-
-    numerical_features = df_full.select_dtypes(exclude=['object','string','category']).columns.tolist()
-    categorical_features = df_full.select_dtypes(include=['object','string','category']).columns.tolist()
-    categorical_features.remove(parameters["target_column"])
-
-    months_int = {'jan':1, 'feb':2, 'mar':3, 'apr':4,'may':5,'jun':6, 'jul':7 , 'aug':8 , 'sep':9 , 'oct':10, 'nov': 11, 'dec':12 }
-    df_full = df_full.reset_index()
-    df_full["datetime"]= df_full["month"].map(months_int)
+    numerical_features.remove(parameters["target_column"])
+    df1 = df1.reset_index()
 
     validation_expectation_suite_numerical = build_expectation_suite("numerical_expectations","numerical_features")
     validation_expectation_suite_categorical = build_expectation_suite("categorical_expectations","categorical_features")
@@ -264,43 +246,48 @@ def ingestion(
     categorical_feature_descriptions =[]
     target_feature_descriptions =[]
     
-    df_full_numeric = df_full[["index","datetime"] + numerical_features]
-    df_full_categorical = df_full[["index","datetime"] + categorical_features]
-    df_full_target = df_full[["index","datetime"] + [parameters["target_column"]]]
+    df1_numeric = df1[["index"] + numerical_features]
+    df1_categorical = df1[["index"] + categorical_features]
+    df1_target = df1[["index"] + [parameters["target_column"]]]
+
+    ###########
+    df1_categorical= df1_categorical.fillna('null')
+    ###########
 
     if parameters["to_feature_store"]:
 
-        object_fs_numerical_features = to_feature_store(
-            df_full_numeric,"numerical_features",
-            1,"Numerical Features",
-            numerical_feature_descriptions,
-            validation_expectation_suite_numerical,
-            credentials["feature_store"]
-        )
+        # object_fs_numerical_features = to_feature_store(
+        #     df1_numeric,"numerical_features",
+        #     1,"Numerical Features",
+        #     numerical_feature_descriptions,
+
+        #     validation_expectation_suite_numerical,
+        #     credentials["feature_store"]
+        # )
 
         object_fs_categorical_features = to_feature_store(
-            df_full_categorical,"categorical_features",
-            1,"Categorical Features",
+            df1_categorical,"categorical_features",
+            5,"Categorical Features",
             categorical_feature_descriptions,
             validation_expectation_suite_categorical,
             credentials["feature_store"]
         )
 
-        object_fs_taregt_features = to_feature_store(
-            df_full_target,"target_features",
-            1,"Target Features",
-            target_feature_descriptions,
-            validation_expectation_suite_target,
-            credentials["feature_store"]
-        )
+        # object_fs_target_features = to_feature_store(
+        #     df1_target,"target_features",
+        #     1,"Target Features",
+        #     target_feature_descriptions,
+        #     validation_expectation_suite_target,
+        #     credentials["feature_store"]
+        # )
 
 
-    return df_full
+    return df1
 
 #VER SE CREDENCIAIS FICAM ASSIM, PERGUNTAR AO PROF!!!
 #Get data from feature Store
-project = hopsworks.login(
-        api_key_value=credentials_input["FS_API_KEY"], project=credentials_input["FS_PROJECT_NAME"]
-    )
-fs = project.get_feature_store(name='nrosa_test_featurestore') #nome do projeto
-fg_lamp_features = fs.get_feature_group('lamp_features', version=1)
+#project = hopsworks.login(
+   #    api_key_value=credentials_input["FS_API_KEY"], project=credentials_input["FS_PROJECT_NAME"]
+   # )
+#fs = project.get_feature_store(name='nrosa_test_featurestore') #nome do projeto
+#fg_lamp_features = fs.get_feature_group('lamp_features', version=1)

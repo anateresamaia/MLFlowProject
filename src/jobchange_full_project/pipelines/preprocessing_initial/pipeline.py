@@ -15,7 +15,7 @@ def create_pipeline(**kwargs) -> Pipeline:
 
             node(
                 func= clean_data,
-                inputs="ingestion",
+                inputs="ingested_data",
                 outputs= ["ref_data_cleaned","reporting_data_train"],
                 name="clean_data",
             ),

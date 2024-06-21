@@ -27,7 +27,7 @@ from jobchange_full_project.pipelines import (
     data_unit_tests as data_tests,
     preprocessing_initial as preprocess_initial,
     split_train_pipeline as split_train,
-    proprocessing_train_val,
+    preprocessing_train_val,
     feature_selection as feature_selection_pipeline,
     model_selection as model_selection_pipeline,
     model_train as model_train_pipeline,
@@ -47,7 +47,7 @@ def register_pipelines() -> Dict[str, Pipeline]:
     data_unit_tests_pipeline = data_tests.create_pipeline()
     preprocess_initial_pipeline = preprocess_initial.create_pipeline()
     split_train_pipeline = split_train.create_pipeline()
-    preprocess_train_val_pipeline = proprocessing_train_val.create_pipeline()
+    preprocess_train_val_pipeline = preprocessing_train_val.create_pipeline()
     feature_selection = feature_selection_pipeline.create_pipeline()
     model_selection = model_selection_pipeline.create_pipeline()
     model_train = model_train_pipeline.create_pipeline()
