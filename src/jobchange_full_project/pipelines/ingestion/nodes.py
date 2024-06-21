@@ -231,6 +231,9 @@ def ingestion(
     """
 
     logger.info(f"The dataset contains {len(df1.columns)} columns.")
+    ###########
+    df1.fillna('null', inplace = True)
+    ###########
     df1.set_index('enrollee_id', inplace=True)
     numerical_features = df1.select_dtypes(exclude=['object','string','category']).columns.tolist()
     categorical_features = ['city','gender','relevent_experience','enrolled_university','education_level','major_discipline','experience','company_size','company_type','last_new_job']
@@ -250,21 +253,19 @@ def ingestion(
     df1_categorical = df1[categorical_features]
     df1_target = df1[[parameters["target_column"]]]
 
-    ###########
-    df1_categorical = df1_categorical.fillna('null')
-    ###########
+
 
 
     if parameters["to_feature_store"]:
 
-        object_fs_numerical_features = to_feature_store(
-            df1_numeric,"numerical_features",
-            1,"Numerical Features",
-            numerical_feature_descriptions,
-
-            validation_expectation_suite_numerical,
-            credentials["feature_store"]
-        )
+        #object_fs_numerical_features = to_feature_store(
+         #   df1_numeric,"numerical_features",
+          #  1,"Numerical Features",
+           # numerical_feature_descriptions,
+#
+ #           validation_expectation_suite_numerical,
+  #          credentials["feature_store"]
+   #     )
 
         object_fs_categorical_features = to_feature_store(
             df1_categorical,"categorical_features",
