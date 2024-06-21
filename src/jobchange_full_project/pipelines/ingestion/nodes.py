@@ -258,14 +258,14 @@ def ingestion(
 
     if parameters["to_feature_store"]:
 
-        #object_fs_numerical_features = to_feature_store(
-         #   df1_numeric,"numerical_features",
-          #  1,"Numerical Features",
-           # numerical_feature_descriptions,
-#
- #           validation_expectation_suite_numerical,
-  #          credentials["feature_store"]
-   #     )
+        object_fs_numerical_features = to_feature_store(
+            df1_numeric,"numerical_features",
+            1,"Numerical Features",
+            numerical_feature_descriptions,
+
+            validation_expectation_suite_numerical,
+            credentials["feature_store"]
+        )
 
         object_fs_categorical_features = to_feature_store(
             df1_categorical,"categorical_features",
