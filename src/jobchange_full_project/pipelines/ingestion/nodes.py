@@ -104,14 +104,14 @@ def build_expectation_suite(expectation_suite_name: str, feature_group: str) -> 
             "last_new_job": ['1', '>4', 'never', '4', '3', '2']
         }
 
-        #Add expectations for each feature
-        # for feature, value_set in feature_values.items():
-        #     expectation_suite_job_change.add_expectation(
-        #         ExpectationConfiguration(
-        #             expectation_type="expect_column_distinct_values_to_be_in_set",
-        #             kwargs={"column": feature, "value_set": value_set},
-        #         )
-        #     )
+        # #Add expectations for each feature
+        for feature, value_set in feature_values.items():
+            expectation_suite_job_change.add_expectation(
+                ExpectationConfiguration(
+                    expectation_type="expect_column_distinct_values_to_be_in_set",
+                    kwargs={"column": feature, "value_set": value_set},
+                )
+            )
 
     if feature_group == 'target':
         # Ensure the column values are of type float
@@ -233,7 +233,7 @@ def ingestion(
     logger.info(f"The dataset contains {len(df1.columns)} columns.")
 
     numerical_features = df1.select_dtypes(exclude=['object','string','category']).columns.tolist()
-    categorical_features = ['city','gender', 'relevent_experience','enrolled_university','education_level','major_discipline','experience','company_size','company_type','last_new_job']
+    categorical_features = ['city','gender','relevent_experience','enrolled_university','education_level','major_discipline','experience','company_size','company_type','last_new_job']
 
     numerical_features.remove(parameters["target_column"])
     df1 = df1.reset_index()
@@ -242,44 +242,45 @@ def ingestion(
     validation_expectation_suite_categorical = build_expectation_suite("categorical_expectations","categorical_features")
     validation_expectation_suite_target = build_expectation_suite("target_expectations","target")
 
-    numerical_feature_descriptions =[]
-    categorical_feature_descriptions =[]
-    target_feature_descriptions =[]
+    numerical_feature_descriptions = []
+    categorical_feature_descriptions = []
+    target_feature_descriptions = []
     
     df1_numeric = df1[["index"] + numerical_features]
     df1_categorical = df1[["index"] + categorical_features]
     df1_target = df1[["index"] + [parameters["target_column"]]]
 
     ###########
-    df1_categorical= df1_categorical.fillna('null')
+    df1_categorical = df1_categorical.fillna('null')
     ###########
+
 
     if parameters["to_feature_store"]:
 
-        # object_fs_numerical_features = to_feature_store(
-        #     df1_numeric,"numerical_features",
-        #     1,"Numerical Features",
-        #     numerical_feature_descriptions,
+        object_fs_numerical_features = to_feature_store(
+            df1_numeric,"numerical_features",
+            1,"Numerical Features",
+            numerical_feature_descriptions,
 
-        #     validation_expectation_suite_numerical,
-        #     credentials["feature_store"]
-        # )
+            validation_expectation_suite_numerical,
+            credentials["feature_store"]
+        )
 
         object_fs_categorical_features = to_feature_store(
             df1_categorical,"categorical_features",
-            5,"Categorical Features",
+            1,"Categorical Features",
             categorical_feature_descriptions,
             validation_expectation_suite_categorical,
             credentials["feature_store"]
         )
 
-        # object_fs_target_features = to_feature_store(
-        #     df1_target,"target_features",
-        #     1,"Target Features",
-        #     target_feature_descriptions,
-        #     validation_expectation_suite_target,
-        #     credentials["feature_store"]
-        # )
+        object_fs_target_features = to_feature_store(
+            df1_target,"target_features",
+            1,"Target Features",
+            target_feature_descriptions,
+            validation_expectation_suite_target,
+            credentials["feature_store"]
+        )
 
 
     return df1
