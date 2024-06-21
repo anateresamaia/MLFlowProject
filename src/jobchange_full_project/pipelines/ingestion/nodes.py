@@ -22,7 +22,7 @@ conf_loader = OmegaConfigLoader(conf_source=conf_path)
 credentials = conf_loader["credentials"]
 
 
-logger = logging.getLogger(_name_)
+logger = logging.getLogger(__name__)
 
 def build_expectation_suite(expectation_suite_name: str, feature_group: str) -> ExpectationSuite:
     """
@@ -168,13 +168,13 @@ def to_feature_store(
         api_key_value=credentials_input["FS_API_KEY"], project=credentials_input["FS_PROJECT_NAME"]
     )
     feature_store = project.get_feature_store()
-
+    data.reset_index(inplace=True)
     # Create feature group.
     object_feature_group = feature_store.get_or_create_feature_group(
         name=group_name,
         version=feature_group_version,
         description=description,
-        primary_key=["index"],
+        primary_key=["enrollee_id"],
         online_enabled=False,
         expectation_suite=validation_expectation_suite,
     )
@@ -231,12 +231,12 @@ def ingestion(
     """
 
     logger.info(f"The dataset contains {len(df1.columns)} columns.")
-
+    df1.set_index('enrollee_id', inplace=True)
     numerical_features = df1.select_dtypes(exclude=['object','string','category']).columns.tolist()
     categorical_features = ['city','gender','relevent_experience','enrolled_university','education_level','major_discipline','experience','company_size','company_type','last_new_job']
 
     numerical_features.remove(parameters["target_column"])
-    df1 = df1.reset_index()
+
 
     validation_expectation_suite_numerical = build_expectation_suite("numerical_expectations","numerical_features")
     validation_expectation_suite_categorical = build_expectation_suite("categorical_expectations","categorical_features")
@@ -246,9 +246,9 @@ def ingestion(
     categorical_feature_descriptions = []
     target_feature_descriptions = []
 
-    df1_numeric = df1[["index"] + numerical_features]
-    df1_categorical = df1[["index"] + categorical_features]
-    df1_target = df1[["index"] + [parameters["target_column"]]]
+    df1_numeric = df1[numerical_features]
+    df1_categorical = df1[categorical_features]
+    df1_target = df1[[parameters["target_column"]]]
 
     ###########
     df1_categorical = df1_categorical.fillna('null')
