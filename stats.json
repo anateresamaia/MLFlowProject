@@ -1,1 +1,1 @@
-{"aug_train": {"rows": 19158, "columns": 14, "file_size": 1961145}, "ingested_data": {"rows": 19158, "columns": 14, "file_size": 1950811}}
+{"ingested_data": {"rows": 19158, "columns": 14, "file_size": 1950811}, "reporting_tests": {"rows": 12, "columns": 12, "file_size": 3200}}

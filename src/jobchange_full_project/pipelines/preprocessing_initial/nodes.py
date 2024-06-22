@@ -76,7 +76,7 @@ def training_hours_(data):
     return data
 
 
-def clean_data(data: pd.DataFrame) -> Tuple[pd.DataFrame, Dict, Dict]:
+def clean_data(data: pd.DataFrame) -> Tuple[pd.DataFrame, Dict]:
     """
     Cleans the data by removing outliers, setting the index, and imputing missing values.
 

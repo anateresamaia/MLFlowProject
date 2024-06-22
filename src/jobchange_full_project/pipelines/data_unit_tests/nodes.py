@@ -163,11 +163,11 @@ def test_data(df):
     batch_request = data_asset.build_batch_request(dataframe=df)
 
     checkpoint = gx.checkpoint.SimpleCheckpoint(
-        name="checkpoint_bank",
+        name="checkpoint_jobchange",
         data_context=context,
         validations=[{
             "batch_request": batch_request,
-            "expectation_suite_name": "Bank",
+            "expectation_suite_name": "Job Change",
         }],
     )
     checkpoint_result = checkpoint.run()

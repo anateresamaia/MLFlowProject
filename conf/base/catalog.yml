@@ -30,8 +30,10 @@ ref_data_clean:
   filepath: data/03_primary/ref_data_cleaned.csv
 
 reporting_data_train:
-  type: pandas.CSVDataset
-  filepath: data/08_reporting/reporting_data_train.csv
+  type: kedro_mlflow.io.artifacts.MlflowArtifactDataset
+  dataset:
+    type: kedro.extras.datasets.json.JSONDataSet
+    filepath: data/08_reporting/reporting_data_train.json
 
 
 preprocessed_initial_data:
