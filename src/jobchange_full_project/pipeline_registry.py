@@ -29,8 +29,8 @@ from jobchange_full_project.pipelines import (
     model_selection as model_selection_pipeline,
     model_train as model_train_pipeline,
     preprocessing_batch,
-    model_predict,
-    data_drift
+    model_predict
+    #data_drift
 
 )
 
@@ -50,7 +50,7 @@ def register_pipelines() -> Dict[str, Pipeline]:
     model_train = model_train_pipeline.create_pipeline()
     preprocess_batch_pipeline = preprocessing_batch.create_pipeline()
     model_predict_pipeline = model_predict.create_pipeline()
-    data_drift_pipeline = data_drift.create_pipeline()
+    #data_drift_pipeline = data_drift.create_pipeline()
 
     return {
         "ingestion": ingestion_pipeline,
@@ -64,6 +64,6 @@ def register_pipelines() -> Dict[str, Pipeline]:
         "production_full_train_process" : preprocess_initial_pipeline + split_train_pipeline + preprocess_train_val_pipeline + model_train,
         "preprocess_batch": preprocess_batch_pipeline,
         "inference" : model_predict_pipeline,
-        "production_full_prediction_process" : preprocess_batch_pipeline + model_predict_pipeline,
-        "data_drift_pipeline": data_drift_pipeline
+        "production_full_prediction_process" : preprocess_batch_pipeline + model_predict_pipeline
+        #"data_drift_pipeline": data_drift_pipeline
     }
