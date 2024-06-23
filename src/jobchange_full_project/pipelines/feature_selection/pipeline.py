@@ -1,4 +1,3 @@
-
 """
 This is a boilerplate pipeline
 generated using Kedro 0.18.8
@@ -14,8 +13,8 @@ def create_pipeline(**kwargs) -> Pipeline:
         [
             node(
                 func=feature_selection,
-                inputs=["X_train_data","y_train_data","parameters"],
-                outputs="best_columns",
+                inputs=["X_train","X_val","y_train","y_val", "parameters"],
+                outputs=["X_train_final", "X_val_final", "y_train_final", "y_val_final"],
                 name="model_feature_selection",
             ),
         ]

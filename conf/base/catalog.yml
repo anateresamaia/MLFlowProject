@@ -71,19 +71,35 @@ y_val_data:
 #preprocessed train e val
 X_train:
   type: pandas.CSVDataset
-  filepath: data/05_model_input/X_train.csv
+  filepath: data/04_feature/X_train.csv
 
 y_train:
   type:   pickle.PickleDataset
-  filepath: data/05_model_input/y_train.pkl
+  filepath: data/04_feature/y_train.pkl
 
 X_val:
   type: pandas.CSVDataset
-  filepath: data/05_model_input/X_val.csv
+  filepath: data/04_feature/X_val.csv
 
 y_val:
   type:   pickle.PickleDataset
-  filepath: data/05_model_input/y_val.pkl
+  filepath: data/04_feature/y_val.pkl
+#Output of Feature Selection
+X_train_final:
+  type: pandas.CSVDataset
+  filepath: data/05_model_input/X_train_final.csv
+
+y_train_final:
+  type:   pickle.PickleDataset
+  filepath: data/05_model_input/y_train_final.pkl
+
+X_val_final:
+  type: pandas.CSVDataset
+  filepath: data/05_model_input/X_val_final.csv
+
+y_val_final:
+  type:   pickle.PickleDataset
+  filepath: data/05_model_input/y_val_final.pkl
 
 #Transformers
 encoder:
