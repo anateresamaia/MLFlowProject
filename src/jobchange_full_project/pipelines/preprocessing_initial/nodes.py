@@ -119,11 +119,6 @@ def feature_engineer(data: pd.DataFrame) -> pd.DataFrame:
     # Drop the original columns used for binning
     data.drop(['experience', 'city_development_index', 'training_hours'], axis=1, inplace=True)
 
-    # Calculate mean balance for each training_hours_bin and assign it to every row in that bin
-    data["mean_balance_bin_training"] = data.groupby("training_hours_bin")["balance"].transform("mean")
-    # Calculate standard deviation of balance for each training_hours_bin and assign it to every row in that bin
-    data["std_balance_bin_training"] = data.groupby("training_hours_bin")["balance"].transform("std")
-
     # Create lists of numeric and categorical features
     numerical_features = data.select_dtypes(exclude=['object', 'string', 'category']).columns.tolist()
     categorical_features = data.select_dtypes(include=['object', 'string', 'category']).columns.tolist()

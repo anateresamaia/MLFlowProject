@@ -1,1 +1,1 @@
-{"ingested_data": {"rows": 19158, "columns": 14, "file_size": 1950811}, "reporting_tests": {"rows": 12, "columns": 12, "file_size": 3200}}
+{"ingested_data": {"rows": 19158, "columns": 14, "file_size": 1950811}, "ref_data_cleaned": {"rows": 19158, "columns": 13}, "preprocessed_initial_data": {"rows": 19158, "columns": 13, "file_size": 2191306}}
