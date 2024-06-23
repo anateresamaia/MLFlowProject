@@ -96,23 +96,25 @@ def test_data(df):
             }
         ),
         ExpectationConfiguration(
-            expectation_type="expect_column_min_to_be_between",
-            kwargs={"column": "training_hours", "min_value": 0},
-        ),
-        ExpectationConfiguration(
-            expectation_type="expect_column_values_to_be_between",
-            kwargs={"column": "city_development_index", "min_value": 0, "max_value": 1},
+            expectation_type="expect_column_values_to_be_in_set",
+            kwargs={"column": "city_development_index_bin",
+                    "value_set": ['<0.4', '0.4-0.5', '0.5-0.6', '0.6-0.7', '0.7-0.8', '0.8-0.85', '0.85-0.9',
+                                  '0.9-0.95', '0.95-1.0']}
         ),
         ExpectationConfiguration(
             expectation_type="expect_column_values_to_be_in_set",
-            kwargs={
-                "column": "experience",
-                "value_set": [str(i) for i in range(1, 21)] + [">20", "<1"]
-            }
+            kwargs={"column": "training_hours_bin",
+                    "value_set": ['0-20', '20-40', '40-60', '60-80', '80-100', '100-150', '150-200', '200-250',
+                                  '250-300', '300-350', '>350']}
         ),
         ExpectationConfiguration(
             expectation_type="expect_column_values_to_be_in_set",
-            kwargs={"column": "gender", "value_set": ["Male", "Female", "Other"]}
+            kwargs={"column": "experience_bin", "value_set": ['0-5', '6-10', '11-15', '16-20', '>20', np.nan]}
+        )
+        ,
+        ExpectationConfiguration(
+            expectation_type="expect_column_values_to_be_in_set",
+            kwargs={"column": "gender", "value_set": ["Male", "Female", "Other","Unknown"]}
         ),
         ExpectationConfiguration(
             expectation_type="expect_column_values_to_be_in_set",
@@ -128,11 +130,11 @@ def test_data(df):
         ),
         ExpectationConfiguration(
             expectation_type="expect_column_values_to_be_in_set",
-            kwargs={"column": "company_size", "value_set": ["<10", "10-49", "50-99", "100-500", "500-999", "1000-4999", "5000-9999", ">10000"]}
+            kwargs={"column": "company_size", "value_set": ["Not Applicable","<10", "10-49", "50-99", "100-500", "500-999", "1000-4999", "5000-9999", ">10000"]}
         ),
         ExpectationConfiguration(
             expectation_type="expect_column_values_to_be_in_set",
-            kwargs={"column": "company_type", "value_set": ["Pvt Ltd", "Funded Startup", "Early Stage Startup", "Other", "Public Sector", "NGO"]}
+            kwargs={"column": "company_type", "value_set": ["Not Applicable","Pvt Ltd", "Funded Startup", "Early Stage Startup", "Other", "Public Sector", "NGO"]}
         ),
         ExpectationConfiguration(
             expectation_type="expect_column_values_to_be_in_set",

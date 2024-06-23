@@ -25,6 +25,10 @@ reporting_tests:
   type: pandas.CSVDataset
   filepath: data/08_reporting/reporting_tests.csv
 
+reporting_tests2:
+  type: pandas.CSVDataset
+  filepath: data/08_reporting/reporting_tests2.csv
+
 ref_data_clean:
   type: pandas.CSVDataset
   filepath: data/03_primary/ref_data_cleaned.csv
@@ -57,12 +61,12 @@ X_val_data:
   filepath: data/03_primary/X_val_data.csv
 
 y_train_data:
-  type: pickle.PickleDataset
-  filepath: data/03_primary/y_train_data.pkl
+  type:  pandas.CSVDataset
+  filepath: data/03_primary/y_train_data.csv
 
 y_val_data:
-  type: pickle.PickleDataset
-  filepath: data/03_primary/y_val_data.pkl
+  type:  pandas.CSVDataset
+  filepath: data/03_primary/y_val_data.csv
 
 #preprocessed train e val
 X_train:
@@ -70,7 +74,7 @@ X_train:
   filepath: data/05_model_input/X_train.csv
 
 y_train:
-  type: pickle.PickleDataset
+  type:   pickle.PickleDataset
   filepath: data/05_model_input/y_train.pkl
 
 X_val:
@@ -78,7 +82,7 @@ X_val:
   filepath: data/05_model_input/X_val.csv
 
 y_val:
-  type: pickle.PickleDataset
+  type:   pickle.PickleDataset
   filepath: data/05_model_input/y_val.pkl
 
 #Transformers

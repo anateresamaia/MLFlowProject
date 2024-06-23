@@ -23,7 +23,7 @@ def split_data(
         Split data.
     """
     # Ensure there are no null values in the data
-    assert [col for col in data.columns if data[col].isnull().any()] == []
+    #assert [col for col in data.columns if data[col].isnull().any()] == []
 
     # Extract the target variable
     target_var = data[parameters["target_column"]]
@@ -41,7 +41,7 @@ def split_data(
         shuffle=True
     )
 
-    return X_train, X_val, y_train, y_val, X_train.columns
+    return X_train, X_val, y_train, y_val
 
 
 

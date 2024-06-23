@@ -18,9 +18,9 @@ credentials = conf_loader["credentials"]
 logger = logging.getLogger(__name__)
 
 
-def additional_preprocessing(X_train_data: pd.DataFrame, X_val_data: pd.DataFrame,
-                             y_train_data: pd.Series, y_val_data: pd.Series,
-                             categorical_features: list, numerical_features: list) -> Tuple[pd.DataFrame, pd.DataFrame, pd.Series, pd.Series, ce.TargetEncoder, MinMaxScaler, KNNImputer]:
+def additional_preprocessing(X_train_data: pd.DataFrame, y_train_data: pd.DataFrame,
+                             X_val_data: pd.DataFrame, y_val_data: pd.DataFrame,
+                             categorical_features: list, numerical_features: list) -> Tuple[pd.DataFrame, pd.DataFrame, pd.DataFrame, pd.DataFrame, ce.TargetEncoder, MinMaxScaler, KNNImputer]:
 
     # Initialize the TargetEncoder with handle_missing='return_nan'
     encoder = ce.TargetEncoder(handle_missing='return_nan')

@@ -91,6 +91,9 @@ def clean_data(data: pd.DataFrame) -> Tuple[pd.DataFrame, Dict]:
     # Describe the data before transformation
     describe_to_dict = df_transformed.describe(include='all').to_dict()
 
+    # Remove duplicates based on enrollee_id
+    df_transformed.drop_duplicates(subset='enrollee_id', inplace=True)
+
     # Remove outliers for city_development_index and training_hours
     df_transformed = df_transformed[df_transformed['city_development_index'] >= 0.4]
     df_transformed = df_transformed[df_transformed['training_hours'] <= 350]
@@ -103,6 +106,8 @@ def clean_data(data: pd.DataFrame) -> Tuple[pd.DataFrame, Dict]:
     df_transformed['experience'].fillna(0, inplace=True)
     df_transformed['company_size'].fillna('Not Applicable', inplace=True)
     df_transformed['company_type'].fillna('Not Applicable', inplace=True)
+    # replace of typo error
+    df_transformed['company_size'].replace('10/49', '10-49', inplace=True)
 
     # Describe the data after transformation
     describe_to_dict_verified = df_transformed.describe(include='all').to_dict()
