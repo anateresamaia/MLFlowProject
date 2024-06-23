@@ -32,7 +32,7 @@ ref_data_clean:
 reporting_data_train:
   type: kedro_mlflow.io.artifacts.MlflowArtifactDataset
   dataset:
-    type: kedro.extras.datasets.json.JSONDataSet
+    type: json.JSONDataset
     filepath: data/08_reporting/reporting_data_train.json
 
 

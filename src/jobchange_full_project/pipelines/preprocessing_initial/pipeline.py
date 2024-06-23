@@ -8,6 +8,7 @@ from kedro.pipeline import Pipeline, node, pipeline
 
 from .nodes import feature_engineer, clean_data
 
+
 def create_pipeline(**kwargs) -> Pipeline:
     return pipeline(
         [
