@@ -18,7 +18,7 @@ credentials = conf_loader["credentials"]
 logger = logging.getLogger(__name__)
 
 
-def additional_preprocessing(X_train_data: pd.DataFrame, y_train_data: pd.DataFrame,
+def additional_preprocessing(X_train_data: pd.DataFrame, y_train_data: pd.DataFrame, ##change y train x val y_train_data: pd.DataFrame
                              X_val_data: pd.DataFrame, y_val_data: pd.DataFrame,
                              categorical_features: list, numerical_features: list) -> Tuple[pd.DataFrame, pd.DataFrame, pd.DataFrame, pd.DataFrame, ce.TargetEncoder, MinMaxScaler, KNNImputer]:
 
@@ -68,6 +68,6 @@ def additional_preprocessing(X_train_data: pd.DataFrame, y_train_data: pd.DataFr
         X_train_data[column] = train_imputed
         X_val_data[column] = val_imputed
 
-    return X_train_data, X_val_data, y_train_data, y_val_data, encoder, scaler, knn_imputer
+    return X_train_data, y_train_data, X_val_data, y_val_data, encoder, scaler, knn_imputer
 
 
