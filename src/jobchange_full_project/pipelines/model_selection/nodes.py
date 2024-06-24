@@ -5,7 +5,9 @@ import numpy as np
 import yaml
 import pickle
 import warnings
+import matplotlib
 
+matplotlib.use('Agg')  # Use a non-interactive backend
 warnings.filterwarnings("ignore", category=Warning)
 
 from sklearn.linear_model import LogisticRegression
@@ -73,7 +75,7 @@ def model_selection(X_train: pd.DataFrame,
     # Perform hyperparameter tuning with RandomizedSearchCV
     param_distributions = parameters['hyperparameters'][best_model_name]
     with mlflow.start_run(experiment_id=experiment_id, nested=True):
-        random_search = RandomizedSearchCV(best_model, param_distributions, n_iter=50, cv=2, scoring='f1_score',
+        random_search = RandomizedSearchCV(best_model, param_distributions, n_iter=50, cv=2, scoring='f1',
                                            n_jobs=-1, random_state=42)
         random_search.fit(X_train, y_train)
         best_model = random_search.best_estimator_
@@ -81,11 +83,12 @@ def model_selection(X_train: pd.DataFrame,
     logger.info(f"Hypertuned model score: {random_search.best_score_}")
     pred_score = accuracy_score(y_test, best_model.predict(X_test))
 
-    if champion_dict['test_score'] < pred_score:
+    if champion_dict['val_score'] < pred_score:
         logger.info(
-            f"New champion model is {best_model_name} with score: {pred_score} vs {champion_dict['test_score']}")
+            f"New champion model is {best_model_name} with score: {pred_score} vs {champion_dict['val_score']}")
         return best_model
     else:
         logger.info(
-            f"Champion model is still {champion_dict['regressor']} with score: {champion_dict['test_score']} vs {pred_score}")
+            f"Champion model is still {champion_dict['regressor']} with score: {champion_dict['val_score']} vs {pred_score}")
         return champion_model
+
