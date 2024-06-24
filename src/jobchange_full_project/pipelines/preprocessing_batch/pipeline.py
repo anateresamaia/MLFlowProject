@@ -13,7 +13,7 @@ def create_pipeline(**kwargs) -> Pipeline:
             node(
                 func=clean_data,
                 inputs="aug_test",
-                outputs="cleaned_data",
+                outputs=["cleaned_data", "describe_to_dict_verified"],
                 name="clean_data",
             ),
             node(
@@ -24,7 +24,7 @@ def create_pipeline(**kwargs) -> Pipeline:
             ),
             node(
                 func=additional_preprocessing,
-                inputs=["feature_engineered_data", "encoder_transform", "scaler", "knn_imputer", "categorical_features", "numerical_features"],
+                inputs=["feature_engineered_data", "encoder", "scaler", "knn_imputer", "categorical_features", "numerical_features"],
                 outputs="preprocessed_batch_data",
                 name="additional_preprocessing",
             ),

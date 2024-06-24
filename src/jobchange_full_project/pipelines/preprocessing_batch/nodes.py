@@ -1,7 +1,6 @@
 import logging
 from typing import Any, Dict, Tuple
 import numpy as np
-import pandas as pd
 from pathlib import Path
 
 import pandas as pd
@@ -31,7 +30,7 @@ from typing import Any, Dict, Tuple
 
 
 
-def clean_data(data: pd.DataFrame) -> Tuple[pd.DataFrame, Dict, Dict]:
+def clean_data(data: pd.DataFrame) -> Tuple[pd.DataFrame, Dict]:
     """
     Cleans the data by removing outliers, setting the index, and imputing missing values.
 
@@ -113,7 +112,6 @@ def training_hours_(data):
                                         include_lowest=True)
     return data
 
-
 def feature_engineer(data: pd.DataFrame) -> pd.DataFrame:
     # Bin the features
     data = experience_(data)
@@ -123,28 +121,28 @@ def feature_engineer(data: pd.DataFrame) -> pd.DataFrame:
     # Drop the original columns used for binning
     data.drop(['experience', 'city_development_index', 'training_hours'], axis=1, inplace=True)
 
-    # Calculate mean balance for each training_hours_bin and assign it to every row in that bin
-    data["mean_balance_bin_training"] = data.groupby("training_hours_bin")["balance"].transform("mean")
-    # Calculate standard deviation of balance for each training_hours_bin and assign it to every row in that bin
-    data["std_balance_bin_training"] = data.groupby("training_hours_bin")["balance"].transform("std")
-
     return data
+
 
 def additional_preprocessing(data: pd.DataFrame, encoder: ce.TargetEncoder, scaler: MinMaxScaler, knn_imputer: KNNImputer,
                              categorical_features: List[str], numerical_features: List[str]) -> pd.DataFrame:
-    # Apply the encoder to the test set
+
     for column in categorical_features:
         data[column] = encoder.transform(data[[column]])
 
-    # Apply the scaler to the numerical features
+    # Update the numerical_features list since all variables are now numerical
+    all_features = data.columns.tolist()
+    numerical_features = all_features
+    print(numerical_features)
+
     for column in numerical_features:
         data[column] = scaler.transform(data[[column]])
-
-    # Apply the KNN imputer to the test set
     columns_to_impute = ['enrolled_university', 'education_level', 'major_discipline', 'last_new_job']
     for column in columns_to_impute:
         test_data = data[[column]]
         test_imputed = knn_imputer.transform(test_data)
         data[column] = test_imputed
 
+
     return data
+
