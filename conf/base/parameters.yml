@@ -7,7 +7,10 @@ use_feature_selection: False
 feature_selection: "rfe"
 model_name: "jobchange"
 baseline_model_params:
-  n_estimators: 100
-  max_depth: 6
-  max_features: 20
-  random_state: 2021
+  solver: 'lbfgs'
+  penalty: 'l2'
+  max_iter: 100
+  l1_ratio: 0.0
+  C: 1438.44988828766
+  random_state: 42
+  class_weight: 'balanced'

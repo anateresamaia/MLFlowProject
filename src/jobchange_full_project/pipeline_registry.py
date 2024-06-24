@@ -27,8 +27,8 @@ from jobchange_full_project.pipelines import (
     split_train_pipeline as split_train,
     preprocessing_train_val,
     feature_selection as feature_selection_pipeline,
-    model_selection as model_selection_pipeline,
     model_train as model_train_pipeline,
+    model_selection as model_selection_pipeline,
     preprocessing_batch,
     model_predict
     #data_drift
@@ -48,8 +48,8 @@ def register_pipelines() -> Dict[str, Pipeline]:
     split_train_pipeline = split_train.create_pipeline()
     preprocess_train_val_pipeline = preprocessing_train_val.create_pipeline()
     feature_selection = feature_selection_pipeline.create_pipeline()
-    model_selection = model_selection_pipeline.create_pipeline()
     model_train = model_train_pipeline.create_pipeline()
+    model_selection = model_selection_pipeline.create_pipeline()
     preprocess_batch_pipeline = preprocessing_batch.create_pipeline()
     model_predict_pipeline = model_predict.create_pipeline()
     #data_drift_pipeline = data_drift.create_pipeline()
@@ -62,8 +62,8 @@ def register_pipelines() -> Dict[str, Pipeline]:
         "split_train": split_train_pipeline,
         "preprocess_train_val": preprocess_train_val_pipeline,
         "feature_selection": feature_selection,
-        "model_selection": model_selection,
         "model_train": model_train,
+        "model_selection": model_selection,
         "production_full_train_process" : preprocess_initial_pipeline + split_train_pipeline + preprocess_train_val_pipeline + model_train,
         "preprocess_batch": preprocess_batch_pipeline,
         "inference" : model_predict_pipeline,
