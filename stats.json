@@ -1,1 +1,1 @@
-{"X_train_final": {"rows": 15326, "columns": 8, "file_size": 1670111}, "X_val_final": {"rows": 3832, "columns": 8, "file_size": 417472}, "y_train_final": {"rows": 15326, "columns": 1, "file_size": 123280}, "y_val_final": {"rows": 3832, "columns": 1, "file_size": 31319}}
+{"ingested_data": {"rows": 19158, "columns": 14, "file_size": 1950811}, "ref_data_cleaned": {"rows": 19158, "columns": 13}, "preprocessed_initial_data": {"rows": 19158, "columns": 13, "file_size": 2191306}}

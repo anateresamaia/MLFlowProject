@@ -24,7 +24,7 @@ def create_pipeline(**kwargs) -> Pipeline:
             ),
             node(
                 func=additional_preprocessing,
-                inputs=["feature_engineered_data", "encoder", "scaler", "knn_imputer", "categorical_features", "numerical_features"],
+                inputs=["feature_engineered_data", "encoder", "scaler", "knn_imputer", "categorical_features"],
                 outputs="preprocessed_batch_data",
                 name="additional_preprocessing",
             ),

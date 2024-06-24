@@ -32,14 +32,14 @@ from typing import Any, Dict, Tuple
 
 def clean_data(data: pd.DataFrame) -> Tuple[pd.DataFrame, Dict]:
     """
-    Cleans the data by removing outliers, setting the index, and imputing missing values.
+        Cleans the data by removing outliers, setting the index, and imputing missing values.
 
-    Args:
-        data: Data containing features and target.
+        Args:
+            data: Data containing features and target.
 
-    Returns:
-        data: Cleaned data
-    """
+        Returns:
+            data: Cleaned data
+        """
     df_transformed = data.copy()
 
     # Describe the data before transformation
@@ -60,12 +60,13 @@ def clean_data(data: pd.DataFrame) -> Tuple[pd.DataFrame, Dict]:
     df_transformed['experience'].fillna(0, inplace=True)
     df_transformed['company_size'].fillna('Not Applicable', inplace=True)
     df_transformed['company_type'].fillna('Not Applicable', inplace=True)
-
     # replace of typo error
     df_transformed['company_size'].replace('10/49', '10-49', inplace=True)
 
     # Describe the data after transformation
     describe_to_dict_verified = df_transformed.describe(include='all').to_dict()
+
+
 
     return df_transformed, describe_to_dict_verified
 
@@ -121,28 +122,36 @@ def feature_engineer(data: pd.DataFrame) -> pd.DataFrame:
     # Drop the original columns used for binning
     data.drop(['experience', 'city_development_index', 'training_hours'], axis=1, inplace=True)
 
+    print("Data Types:\n", data.dtypes)
+    print("\nColumn Names:\n", data.columns.tolist())
+
     return data
 
 
 def additional_preprocessing(data: pd.DataFrame, encoder: ce.TargetEncoder, scaler: MinMaxScaler, knn_imputer: KNNImputer,
-                             categorical_features: List[str], numerical_features: List[str]) -> pd.DataFrame:
-
+                             categorical_features: List[str]) -> pd.DataFrame:
+    # Iterate through the categorical features
     for column in categorical_features:
         data[column] = encoder.transform(data[[column]])
 
     # Update the numerical_features list since all variables are now numerical
     all_features = data.columns.tolist()
     numerical_features = all_features
-    print(numerical_features)
 
+    # Apply MinMaxScaler to the numerical features
     for column in numerical_features:
         data[column] = scaler.transform(data[[column]])
+
+    # Select columns for imputation
     columns_to_impute = ['enrolled_university', 'education_level', 'major_discipline', 'last_new_job']
+
+    # Apply imputation
     for column in columns_to_impute:
         test_data = data[[column]]
+        # Transform the validation data using the fitted imputer
         test_imputed = knn_imputer.transform(test_data)
+        # Update the DataFrames with the imputed values
         data[column] = test_imputed
-
 
     return data
 
