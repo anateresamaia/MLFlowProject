@@ -120,9 +120,9 @@ knn_imputer:
     type: pickle.PickleDataset
     filepath: data/04_feature/knn_imputer.pkl
 
-"preprocessed_batch_data":
+preprocessed_batch_data:
   type: pandas.CSVDataset
-  filepath: data/03_primary/"preprocessed_batch_data".csv
+  filepath: data/03_primary/preprocessed_batch_data.csv
 
 production_model:
   type: kedro_mlflow.io.artifacts.MlflowArtifactDataset
@@ -154,6 +154,12 @@ champion_model:
   dataset:
     type: pickle.PickleDataset
     filepath: data/06_models/champion_model.pkl
+
+#Batch data
+feature_engineered_data:
+  type: pandas.CSVDataset
+  filepath: data/03_primary/"preprocessed_batch_data".csv
+
 
 #" " "
 #reporting_data_train:
