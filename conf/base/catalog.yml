@@ -51,7 +51,6 @@ numerical_features:
 categorical_features:
   type: pickle.PickleDataset
   filepath: data/03_primary/categorical_features.pkl
-
 X_train_data:
   type: pandas.CSVDataset
   filepath: data/03_primary/X_train_data.csv
@@ -158,7 +157,7 @@ champion_model:
 #Batch data
 feature_engineered_data:
   type: pandas.CSVDataset
-  filepath: data/03_primary/"preprocessed_batch_data".csv
+  filepath: data/03_primary/preprocessed_batch_data.csv
 
 
 #" " "

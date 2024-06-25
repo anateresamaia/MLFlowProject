@@ -70,7 +70,6 @@ def clean_data(data: pd.DataFrame) -> Tuple[pd.DataFrame, Dict]:
 
     return df_transformed, describe_to_dict_verified
 
-
 def experience_(data):
     def experience_bin(exp):
         if pd.isna(exp):
@@ -111,6 +110,8 @@ def training_hours_(data):
 
     data['training_hours_bin'] = pd.cut(data['training_hours'], bins=training_hours_bins, labels=training_hours_labels,
                                         include_lowest=True)
+    data['training_hours_bin'] = data['training_hours_bin'].astype('object')
+
     return data
 
 def feature_engineer(data: pd.DataFrame) -> pd.DataFrame:
@@ -121,37 +122,40 @@ def feature_engineer(data: pd.DataFrame) -> pd.DataFrame:
 
     # Drop the original columns used for binning
     data.drop(['experience', 'city_development_index', 'training_hours'], axis=1, inplace=True)
-
     print("Data Types:\n", data.dtypes)
     print("\nColumn Names:\n", data.columns.tolist())
-
+    #data.drop(["training_hours_bin"], axis=1, inplace=True)
     return data
 
 
 def additional_preprocessing(data: pd.DataFrame, encoder: ce.TargetEncoder, scaler: MinMaxScaler, knn_imputer: KNNImputer,
                              categorical_features: List[str]) -> pd.DataFrame:
-    # Iterate through the categorical features
-    for column in categorical_features:
-        data[column] = encoder.transform(data[[column]])
+
+    missing_cols = [col for col in encoder.cols if col not in data.columns]
+    if missing_cols:
+        raise ValueError(f"Missing columns in input data that were expected for transformation: {missing_cols}")
+
+    data[categorical_features] = encoder.transform(data[categorical_features])
 
     # Update the numerical_features list since all variables are now numerical
     all_features = data.columns.tolist()
     numerical_features = all_features
-
+    print(numerical_features)
     # Apply MinMaxScaler to the numerical features
-    for column in numerical_features:
-        data[column] = scaler.transform(data[[column]])
-
-    # Select columns for imputation
+    # Applying MinMaxScaler to all numerical features at once
     columns_to_impute = ['enrolled_university', 'education_level', 'major_discipline', 'last_new_job']
 
-    # Apply imputation
-    for column in columns_to_impute:
-        test_data = data[[column]]
-        # Transform the validation data using the fitted imputer
-        test_imputed = knn_imputer.transform(test_data)
-        # Update the DataFrames with the imputed values
-        data[column] = test_imputed
+    data[numerical_features] = scaler.transform(data[numerical_features])
+
+    # Applying KNN Imputer to the specified columns for imputation
+
+    imputed_data = knn_imputer.transform(data[columns_to_impute])
+    data[columns_to_impute] = imputed_data  # Update the data with imputed values
+
+    columns_to_drop = ['gender', 'relevent_experience', 'major_discipline', 'city_development_index_bin']
+
+    # Drop the specified columns from the DataFrame
+    data = data.drop(columns=columns_to_drop)
 
     return data
 

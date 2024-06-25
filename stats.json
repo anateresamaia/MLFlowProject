@@ -1,1 +1,1 @@
-{"ingested_data": {"rows": 19158, "columns": 14, "file_size": 1950811}, "ref_data_cleaned": {"rows": 19158, "columns": 13}, "preprocessed_initial_data": {"rows": 19158, "columns": 13, "file_size": 2191306}}
+{"aug_test": {"rows": 2129, "columns": 13, "file_size": 212634}, "cleaned_data": {"rows": 2129, "columns": 12}, "feature_engineered_data": {"rows": 2129, "columns": 12, "file_size": 234615}, "preprocessed_batch_data": {"rows": 2129, "columns": 8, "file_size": 258713}}

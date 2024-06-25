@@ -21,17 +21,16 @@ logger = logging.getLogger(__name__)
 def additional_preprocessing(X_train_data: pd.DataFrame, y_train_data: pd.DataFrame, ##change y train x val y_train_data: pd.DataFrame
                              X_val_data: pd.DataFrame, y_val_data: pd.DataFrame,
                              categorical_features: list, numerical_features: list) -> Tuple[pd.DataFrame, pd.DataFrame, pd.DataFrame, pd.DataFrame, ce.TargetEncoder, MinMaxScaler, KNNImputer]:
-
-    # Initialize the TargetEncoder with handle_missing='return_nan'
-    encoder = ce.TargetEncoder(handle_missing='return_nan')
-
-    # Iterate through the categorical features
+    # Initialize the TargetEncoder only once
     for column in categorical_features:
-        encoder.fit(X_train_data[[column]], y_train_data)
-
-        # Transform the training and validation sets
-        X_train_data[column] = encoder.transform(X_train_data[[column]])
-        X_val_data[column] = encoder.transform(X_val_data[[column]])
+        X_train_data[column] = X_train_data[column].astype('category')
+        X_val_data[column] = X_val_data[column].astype('category')
+    encoder = ce.TargetEncoder(cols=categorical_features, handle_missing='return_nan')
+    print(encoder)
+    # Fit the encoder using the training data and transform both train and validation datasets
+    encoder.fit(X_train_data[categorical_features], y_train_data)
+    X_train_data[categorical_features] = encoder.transform(X_train_data[categorical_features])
+    X_val_data[categorical_features] = encoder.transform(X_val_data[categorical_features])
 
     # Update the numerical_features list since all variables are now numerical
     all_features = X_train_data.columns.tolist()
@@ -40,33 +39,25 @@ def additional_preprocessing(X_train_data: pd.DataFrame, y_train_data: pd.DataFr
     # Initialize the MinMaxScaler
     scaler = MinMaxScaler()
 
-    # Apply MinMaxScaler to the numerical features
-    for column in numerical_features:
-        scaler.fit(X_train_data[[column]])
+    # Fit the scaler on all numerical features in the training data
+    scaler.fit(X_train_data[numerical_features])
 
-        X_train_data[column] = scaler.transform(X_train_data[[column]])
-        X_val_data[column] = scaler.transform(X_val_data[[column]])
+    # Transform both training and validation data using the fitted scaler
+    X_train_data[numerical_features] = scaler.transform(X_train_data[numerical_features])
+    X_val_data[numerical_features] = scaler.transform(X_val_data[numerical_features])
 
-    # Initialize the KNNImputer
+    # Initialize the KNNImputer with the specified number of neighbors
     knn_imputer = KNNImputer(n_neighbors=5)
 
+    # Fit and transform the imputer on the selected columns in the training data
     # Select columns for imputation
     columns_to_impute = ['enrolled_university', 'education_level', 'major_discipline', 'last_new_job']
 
-    # Apply imputation
-    for column in columns_to_impute:
-        train_data = X_train_data[[column]]
-        val_data = X_val_data[[column]]
+    knn_imputer.fit(X_train_data[columns_to_impute])
+    X_train_data[columns_to_impute] = knn_imputer.transform(X_train_data[columns_to_impute])
 
-        # Fit and transform the imputer on the training data
-        train_imputed = knn_imputer.fit_transform(train_data)
-
-        # Transform the validation data using the fitted imputer
-        val_imputed = knn_imputer.transform(val_data)
-
-        # Update the DataFrames with the imputed values
-        X_train_data[column] = train_imputed
-        X_val_data[column] = val_imputed
+    # Transform the validation data using the fitted imputer
+    X_val_data[columns_to_impute] = knn_imputer.transform(X_val_data[columns_to_impute])
 
     return X_train_data, y_train_data, X_val_data, y_val_data, encoder, scaler, knn_imputer
 
