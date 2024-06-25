@@ -1,38 +1,36 @@
-
 import pandas as pd
-import logging
-from typing import Dict, Tuple, Any
-import numpy as np  
 import pickle
-
-from sklearn.ensemble import RandomForestClassifier, GradientBoostingClassifier
+from typing import Tuple, Dict, Any
+import logging
 
 logger = logging.getLogger(__name__)
 
-def model_predict(X: pd.DataFrame,
-                  model: pickle.Pickler, columns: pickle.Pickler) -> Tuple[pd.DataFrame, Dict[str, Any]]:
+
+def model_predict(batch_data: pd.DataFrame, model: Any, columns: list) -> Tuple[pd.DataFrame, Dict[str, Any]]:
     """Predict using the trained model.
 
     Args:
-    --
-        X (pd.DataFrame): Serving observations.
-        model (pickle): Trained model.
+        batch_data (pd.DataFrame): DataFrame containing the batch data.
+        model (Any): Trained model loaded from a pickle file.
+        columns (list): List of columns to be used for prediction.
 
     Returns:
-    --
-        scores (pd.DataFrame): Dataframe with new predictions.
+        Tuple[pd.DataFrame, Dict[str, Any]]: DataFrame with new predictions and a summary dictionary.
     """
+    # Ensure the batch data contains the necessary columns
+    if not all(col in batch_data.columns for col in columns):
+        raise ValueError("Batch data is missing required columns for prediction.")
 
-    # Predict
-    
-    y_pred = model.predict(X[columns])
+    # Make predictions
+    y_pred = model.predict(batch_data[columns])
 
-    # Create dataframe with predictions
-    X['y_pred'] = y_pred
-    
-    # Create dictionary with predictions
-    describe_servings = X.describe().to_dict()
+    # Add predictions to the DataFrame
+    batch_data['y_pred'] = y_pred
+
+    # Create a summary dictionary
+    describe_servings = batch_data.describe().to_dict()
 
     logger.info('Service predictions created.')
     logger.info('#servings: %s', len(y_pred))
-    return X, describe_servings
+
+    return batch_data, describe_servings

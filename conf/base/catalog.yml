@@ -3,7 +3,7 @@
 # Documentation for this file format can be found in "The Data Catalog"
 # Link: https://docs.kedro.org/en/stable/data/data_catalog.html
 
-
+#Raw data
 
 aug_train:
   type: pandas.CSVDataset
@@ -16,11 +16,11 @@ aug_test:
   type: pandas.CSVDataset
   filepath: data/01_raw/aug_test.csv
 
-
+#Ingestion
 ingested_data:
   type: pandas.CSVDataset
   filepath: data/02_intermediate/ingested_data.csv
-
+#Unit tests
 reporting_tests:
   type: pandas.CSVDataset
   filepath: data/08_reporting/reporting_tests.csv
@@ -28,7 +28,7 @@ reporting_tests:
 reporting_tests2:
   type: pandas.CSVDataset
   filepath: data/08_reporting/reporting_tests2.csv
-
+#Clean data
 ref_data_clean:
   type: pandas.CSVDataset
   filepath: data/03_primary/ref_data_cleaned.csv
@@ -119,10 +119,7 @@ knn_imputer:
     type: pickle.PickleDataset
     filepath: data/04_feature/knn_imputer.pkl
 
-preprocessed_batch_data:
-  type: pandas.CSVDataset
-  filepath: data/03_primary/preprocessed_batch_data.csv
-
+#Modelling
 production_model:
   type: kedro_mlflow.io.artifacts.MlflowArtifactDataset
   dataset:
@@ -154,7 +151,27 @@ champion_model:
     type: pickle.PickleDataset
     filepath: data/06_models/champion_model.pkl
 
-#Batch data
+#Test data preproc
+preprocessed_batch_data:
+  type: pandas.CSVDataset
+  filepath: data/03_primary/preprocessed_batch_data.csv
+
+#Final predictions
+
+# Define the dataset for the prediction results
+df_with_predict:
+  type: pandas.CSVDataSet
+  filepath: data/07_model_output/df_with_predict.csv
+  save_args:
+    index: False
+
+# Define the dataset for the prediction description
+predict_describe:
+  type: pandas.JSONDataSet
+  filepath: data/08_reporting/predict_describe.json
+
+
+#Batch data engeneering
 feature_engineered_data:
   type: pandas.CSVDataset
   filepath: data/03_primary/preprocessed_batch_data.csv
