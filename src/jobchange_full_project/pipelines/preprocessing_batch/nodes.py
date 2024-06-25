@@ -151,7 +151,7 @@ def additional_preprocessing(data: pd.DataFrame, encoder: ce.TargetEncoder, scal
 
     imputed_data = knn_imputer.transform(data[columns_to_impute])
     data[columns_to_impute] = imputed_data  # Update the data with imputed values
-
+    #Feature Selection
     columns_to_drop = ['gender', 'relevent_experience', 'major_discipline', 'city_development_index_bin']
 
     # Drop the specified columns from the DataFrame
