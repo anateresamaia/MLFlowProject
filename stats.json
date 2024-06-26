@@ -1,1 +1,1 @@
-{"aug_test": {"rows": 2129, "columns": 13, "file_size": 212634}, "cleaned_data": {"rows": 2129, "columns": 12}, "feature_engineered_data": {"rows": 2129, "columns": 12, "file_size": 234615}, "preprocessed_batch_data": {"rows": 2129, "columns": 8, "file_size": 258713}}
+{"preprocessed_batch_data": {"rows": 2129, "columns": 8, "file_size": 258713}, "df_with_predict": {"rows": 2129, "columns": 9, "file_size": 242500}}

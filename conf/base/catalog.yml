@@ -126,7 +126,7 @@ production_model:
     type: pickle.PickleDataset
     filepath: data/06_models/production_model.pkl
 
-production_columns:
+production_cols:
   type: kedro_mlflow.io.artifacts.MlflowArtifactDataset
   dataset:
     type: pickle.PickleDataset
@@ -160,15 +160,15 @@ preprocessed_batch_data:
 
 # Define the dataset for the prediction results
 df_with_predict:
-  type: pandas.CSVDataSet
+  type: pandas.CSVDataset
   filepath: data/07_model_output/df_with_predict.csv
   save_args:
     index: False
 
 # Define the dataset for the prediction description
 predict_describe:
-  type: pandas.JSONDataSet
-  filepath: data/08_reporting/predict_describe.json
+  type: pickle.PickleDataset
+  filepath: data/08_reporting/predict_describe.pkl
 
 
 #Batch data engeneering
