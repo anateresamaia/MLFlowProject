@@ -106,10 +106,7 @@ def clean_data(data: pd.DataFrame) -> Tuple[pd.DataFrame, Dict]:
     df_transformed['experience'].fillna(0, inplace=True)
     df_transformed['company_size'].fillna('Not Applicable', inplace=True)
     df_transformed['company_type'].fillna('Not Applicable', inplace=True)
-    # replace of typo error
-    df_transformed['company_size'].replace('10/49', '10-49', inplace=True)
-    #replace of typo error
-    df_transformed['company_size'].replace('10/49', '10-49', inplace=True)
+    df_transformed['company_size'].replace('10/49', '10-49',inplace = True)
     # Describe the data after transformation
     describe_to_dict_verified = df_transformed.describe(include='all').to_dict()
 

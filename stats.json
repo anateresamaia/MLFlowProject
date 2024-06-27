@@ -1,1 +1,1 @@
-{"aug_train": {"rows": 19158, "columns": 14, "file_size": 1884759}, "ingested_data": {"rows": 19158, "columns": 14, "file_size": 1884759}}
+{"aug_train": {"rows": 19158, "columns": 14, "file_size": 1980304}, "aug_test": {"rows": 2129, "columns": 13, "file_size": 210504}, "drift_result": {"rows": 43, "columns": 47, "file_size": 16338}}

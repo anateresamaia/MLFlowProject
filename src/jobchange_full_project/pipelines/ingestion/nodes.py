@@ -226,8 +226,9 @@ def ingestion(
     df1_categorical = df1[categorical_features + ['enrollee_id']]
     df1_categorical["city"]= df1_categorical["city"].apply(lambda x : str(x).replace('_',''))
     df1_categorical = df1_categorical.fillna('null')
+    df1_categorical["company_size"].replace("10/49","10-49", inplace = True)
     df1_target = df1[[parameters["target_column"], 'enrollee_id']]
-
+    #
     if parameters["to_feature_store"]:
         object_fs_numerical_features = to_feature_store(
             df1_numeric, "numerical_features",
@@ -255,12 +256,4 @@ def ingestion(
 
 
     return df1
-
-#VER SE CREDENCIAIS FICAM ASSIM, PERGUNTAR AO PROF!!!
-#Get data from feature Store
-#project = hopsworks.login(
-   #    api_key_value=credentials_input["FS_API_KEY"], project=credentials_input["FS_PROJECT_NAME"]
-   # )
-#fs = project.get_feature_store(name='nrosa_test_featurestore') #nome do projeto
-#fg_lamp_features = fs.get_feature_group('lamp_features', version=1)
 

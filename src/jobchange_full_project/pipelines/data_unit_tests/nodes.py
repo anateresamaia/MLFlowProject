@@ -128,7 +128,7 @@ def test_data(df):
         ),
         ExpectationConfiguration(
             expectation_type="expect_column_values_to_be_in_set",
-            kwargs={"column": "company_size", "value_set": ["<10", "10-49", "50-99", "100-500", "500-999", "1000-4999", "5000-9999", ">10000"]}
+            kwargs={"column": "company_size", "value_set": ["<10", "10/49", "50-99", "100-500", "500-999", "1000-4999", "5000-9999", "10000+"]}
         ),
         ExpectationConfiguration(
             expectation_type="expect_column_values_to_be_in_set",
