@@ -1,1 +1,1 @@
-{"preprocessed_batch_data": {"rows": 2129, "columns": 8, "file_size": 258713}, "df_with_predict": {"rows": 2129, "columns": 9, "file_size": 242500}}
+{"aug_train": {"rows": 19158, "columns": 14, "file_size": 1884759}, "ingested_data": {"rows": 19158, "columns": 14, "file_size": 1884759}}
