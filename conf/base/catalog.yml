@@ -14,7 +14,7 @@ aug_train:
 
 aug_test:
   type: pandas.CSVDataset
-  filepath: data/01_raw/aug_test.csv
+  filepath: data/01_raw/aug_test_drift.csv
 
 #Ingestion
 ingested_data:
