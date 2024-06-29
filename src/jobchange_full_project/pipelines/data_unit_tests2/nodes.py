@@ -4,18 +4,14 @@ generated using Kedro 0.18.8
 """
 
 import logging
-from typing import Any, Dict, Tuple
 
 import numpy as np
 import pandas as pd
 
-from great_expectations.core import ExpectationSuite, ExpectationConfiguration
+from great_expectations.core import  ExpectationConfiguration
 import great_expectations as gx
 
-from pathlib import Path
 
-from kedro.config import OmegaConfigLoader
-from kedro.framework.project import settings
 
 logger = logging.getLogger(__name__)
 
@@ -175,11 +171,6 @@ def test_data(df):
     checkpoint_result = checkpoint.run()
 
     df_validation = get_validation_results(checkpoint_result)
-
-    pd_df_ge = gx.from_pandas(df)
-
-    # Example asserts
-    #assert pd_df_ge.expect_column_values_to_be_of_type("city_development_index", "float64").success
 
     log = logging.getLogger(__name__)
     log.info("Data passed the unit data tests")

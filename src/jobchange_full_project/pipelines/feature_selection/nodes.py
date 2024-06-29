@@ -1,19 +1,14 @@
-import logging
-from typing import Any, Dict, Tuple
+
+from typing import Any, Dict
 import numpy as np
 import pandas as pd
-import json
-from sklearn.model_selection import train_test_split, GridSearchCV
-from sklearn.preprocessing import OneHotEncoder , LabelEncoder
-import matplotlib.pyplot as plt
-from sklearn.metrics import accuracy_score, classification_report, f1_score
-from sklearn.ensemble import RandomForestClassifier
+
+from sklearn.metrics import f1_score
+
 from sklearn.linear_model import LogisticRegression, LassoCV
 from sklearn.tree import DecisionTreeClassifier
 from sklearn.feature_selection import RFE
 from collections import Counter
-import os
-import pickle
 
 
 def feature_selection(X_train: pd.DataFrame, X_val: pd.DataFrame, y_train: pd.DataFrame, y_val: pd.DataFrame, parameters: Dict[str, Any]):

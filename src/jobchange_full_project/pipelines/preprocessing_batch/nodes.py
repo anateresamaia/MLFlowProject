@@ -1,13 +1,11 @@
 import logging
-from typing import Any, Dict, Tuple
-import numpy as np
 from pathlib import Path
 
 import pandas as pd
 from sklearn.preprocessing import MinMaxScaler
 from sklearn.impute import KNNImputer
 import category_encoders as ce
-from typing import Tuple, List
+from typing import  List
 
 from kedro.config import OmegaConfigLoader
 from kedro.framework.project import settings
@@ -25,8 +23,8 @@ This is a boilerplate pipeline
 generated using Kedro 0.18.8
 """
 
-import logging
-from typing import Any, Dict, Tuple
+
+from typing import Dict, Tuple
 
 
 
@@ -42,15 +40,12 @@ def clean_data(data: pd.DataFrame) -> Tuple[pd.DataFrame, Dict]:
         """
     df_transformed = data.copy()
 
-    # Describe the data before transformation
-    describe_to_dict = df_transformed.describe(include='all').to_dict()
 
     # Remove duplicates based on enrollee_id
     df_transformed.drop_duplicates(subset='enrollee_id', inplace=True)
 
     # Remove outliers for city_development_index and training_hours
     df_transformed = df_transformed[df_transformed['city_development_index'] >= 0.4]
-    df_transformed = df_transformed[df_transformed['training_hours'] <= 350]
 
     # Set enrollee_id as the index
     df_transformed.set_index('enrollee_id', inplace=True)
@@ -123,7 +118,6 @@ def feature_engineer(data: pd.DataFrame) -> pd.DataFrame:
     data.drop(['experience', 'city_development_index', 'training_hours'], axis=1, inplace=True)
     print("Data Types:\n", data.dtypes)
     print("\nColumn Names:\n", data.columns.tolist())
-    #data.drop(["training_hours_bin"], axis=1, inplace=True)
     return data
 
 
@@ -141,7 +135,6 @@ def additional_preprocessing(data: pd.DataFrame, encoder: ce.TargetEncoder, scal
     numerical_features = all_features
     print(numerical_features)
     # Apply MinMaxScaler to the numerical features
-    # Applying MinMaxScaler to all numerical features at once
     columns_to_impute = ['enrolled_university', 'education_level', 'major_discipline', 'last_new_job']
 
     data[numerical_features] = scaler.transform(data[numerical_features])

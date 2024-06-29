@@ -6,7 +6,6 @@ generated using Kedro 0.18.8
 import logging
 from typing import Any, Dict, Tuple
 
-import numpy as np
 import pandas as pd
 
 from sklearn.model_selection import train_test_split
@@ -22,8 +21,6 @@ def split_data(
     Returns:
         Split data.
     """
-    # Ensure there are no null values in the data
-    #assert [col for col in data.columns if data[col].isnull().any()] == []
 
     # Extract the target variable
     target_var = data[parameters["target_column"]]

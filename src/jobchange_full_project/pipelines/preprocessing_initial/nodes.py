@@ -3,12 +3,8 @@ This is a boilerplate pipeline
 generated using Kedro 0.18.8
 """
 import logging
-from typing import Any, Dict, Tuple
-import numpy as np
-import pandas as pd
-from pathlib import Path
-from sklearn.preprocessing import OneHotEncoder , LabelEncoder
 
+from pathlib import Path
 
 from kedro.config import OmegaConfigLoader
 from kedro.framework.project import settings
@@ -26,11 +22,10 @@ This is a boilerplate pipeline
 generated using Kedro 0.18.8
 """
 
-import logging
-from typing import Any, Dict, Tuple
-import numpy as np
+
+from typing import Dict, Tuple
+
 import pandas as pd
-from sklearn.preprocessing import OneHotEncoder , LabelEncoder
 
 
 def experience_(data):
@@ -88,15 +83,12 @@ def clean_data(data: pd.DataFrame) -> Tuple[pd.DataFrame, Dict]:
     """
     df_transformed = data.copy()
 
-    # Describe the data before transformation
-    describe_to_dict = df_transformed.describe(include='all').to_dict()
 
     # Remove duplicates based on enrollee_id
     df_transformed.drop_duplicates(subset='enrollee_id', inplace=True)
 
     # Remove outliers for city_development_index and training_hours
     df_transformed = df_transformed[df_transformed['city_development_index'] >= 0.4]
-    df_transformed = df_transformed[df_transformed['training_hours'] <= 350]
 
     # Set enrollee_id as the index
     df_transformed.set_index('enrollee_id', inplace=True)

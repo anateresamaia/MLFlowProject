@@ -1,19 +1,4 @@
-# """Project pipelines."""
-# from __future__ import annotations
 
-# from kedro.framework.project import find_pipelines
-# from kedro.pipeline import Pipeline
-
-
-# def register_pipelines() -> dict[str, Pipeline]:
-#     """Register the project's pipelines.
-
-#     Returns:
-#         A mapping from pipeline names to ``Pipeline`` objects.
-#     """
-#     pipelines = find_pipelines()
-#     pipelines["__default__"] = sum(pipelines.values())
-#     return pipelines
 
 """Project pipelines."""
 from typing import Dict
@@ -64,9 +49,7 @@ def register_pipelines() -> Dict[str, Pipeline]:
         "feature_selection": feature_selection,
         "model_train": model_train,
         "model_selection": model_selection,
-       # "production_full_train_process" : preprocess_initial_pipeline + split_train_pipeline + preprocess_train_val_pipeline + model_train,
         "preprocess_batch": preprocess_batch_pipeline,
         "inference": model_predict_pipeline,
-       # "production_full_prediction_process" : preprocess_batch_pipeline + model_predict_pipeline
         "data_drift_pipeline": data_drift_pipeline
     }

@@ -1,6 +1,6 @@
 import pandas as pd
 import logging
-from typing import Dict, Tuple, Any
+from typing import Dict,Any
 import numpy as np
 import pickle
 import yaml
@@ -10,7 +10,6 @@ warnings.filterwarnings("ignore", category=Warning)
 import mlflow
 from sklearn.metrics import accuracy_score, f1_score
 from sklearn.linear_model import LogisticRegression
-from sklearn.ensemble import RandomForestClassifier
 import shap
 import matplotlib.pyplot as plt
 
@@ -100,17 +99,5 @@ def model_train(X_train_final: pd.DataFrame,
     # calculate shap values and plot summary
     shap.summary_plot(shap_values, X_train_final, feature_names=X_train_final.columns, show=False)
 
-
-    '''
-    # When we use RF:
-    explainer = shap.TreeExplainer(model)
-    shap_values = explainer(X_train_final)
-
-    shap.initjs()
-    # calculate shap values. This is what we will plot.
-    # shap_values[:,:,1] -> since it is a classification problem, I will use SHAP for explaining the outcome of class 1.
-    # you can do the same for the class 0 just by using shap_values[:,:,0]
-    shap.summary_plot(shap_values[:,:,1], X_train_final,feature_names=X_train_final.columns, show=False)
-    '''
 
     return model, X_train_final.columns, results_dict, plt

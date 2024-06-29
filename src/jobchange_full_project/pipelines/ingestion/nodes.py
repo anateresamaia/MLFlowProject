@@ -4,9 +4,9 @@ generated using Kedro 0.18.8
 """
 
 import logging
-from typing import Any, Dict, Tuple
+from typing import Any, Dict
 
-import numpy as np
+
 import pandas as pd
 
 from great_expectations.core import ExpectationSuite, ExpectationConfiguration
@@ -205,9 +205,7 @@ def ingestion(
     """
 
     logger.info(f"The dataset contains {len(df1.columns)} columns.")
-    ###########
 
-    ###########
     numerical_features = df1.select_dtypes(exclude=['object','string','category']).columns.tolist()
     categorical_features = ['city','gender','relevent_experience','enrolled_university','education_level','major_discipline','experience','company_size','company_type','last_new_job']
 
