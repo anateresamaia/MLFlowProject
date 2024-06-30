@@ -91,7 +91,6 @@ def feature_selection(X_train: pd.DataFrame, X_val: pd.DataFrame, y_train: pd.Da
         for index, value in rfe_dataset.items():
             if not value:
                 rfe_eliminate.append(index)
-
         return rfe_eliminate
 
     def lasso_analysis(X_train, y_train):

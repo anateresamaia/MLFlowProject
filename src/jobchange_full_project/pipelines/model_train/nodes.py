@@ -90,14 +90,18 @@ def model_train(X_train_final: pd.DataFrame,
     print(f1_train)
     print(f1_val)
 
+    # Choose appropriate SHAP explainer based on model type
+    if isinstance(model, (LogisticRegression)):
+        explainer = shap.LinearExplainer(model, X_train_final)
+    elif isinstance(model, (GradientBoostingClassifier)):
+        explainer = shap.TreeExplainer(model)
+    else:
+        raise ValueError(f"Unsupported model type: {type(model)}")
 
-    # When we use LR:
-    explainer = shap.LinearExplainer(model, X_train_final)
     shap_values = explainer(X_train_final)
 
     shap.initjs()
     # calculate shap values and plot summary
-    shap.summary_plot(shap_values, X_train_final, feature_names=X_train_final.columns, show=False)
-
+    shap.summary_plot(shap_values, X_train_final, feature_names=X_train_final.columns, show = False)
 
     return model, X_train_final.columns, results_dict, plt
