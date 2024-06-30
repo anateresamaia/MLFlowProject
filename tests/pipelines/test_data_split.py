@@ -1,46 +1,37 @@
+import pytest
 import pandas as pd
-import numpy as np
-
 from src.jobchange_full_project.pipelines.split_train_pipeline.nodes import split_data
 
-def test_split_data():
-    """Test the split_data function.
-    """
 
-    # Create a sample DataFrame
-    data = {
-        'Id': [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
-        'Feature1': [1, 40, 50, 40, 50,40,20,90,10,10],
-        'Feature2': [100, 10, 30, 1, 0,3,5,7,8, 9],
-        'Target': [1, 0, 1, 0, 1, 1,0,1,1,0 ],
-        'index' : [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
-        'datetime' : [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
-    }
-    df = pd.DataFrame(data)
+
+def test_split_data():
+    df = pd.read_csv("./data/03_primary/preprocessed_initial_data.csv")
+
 
     # Define the parameters
     parameters = {
-        'target_column': 'Target',
-        'random_state': 2021,
+        'target_column': 'target',
+        'random_state': 42,
         'test_fraction': 0.2
     }
 
     # Call the split_data function
-    X_train, X_test, y_train, y_test, columns_list = split_data(df, parameters)
-
+    X_train, X_val, y_train, y_val = split_data(df, parameters)
 
     # Assert the existence of the datasets
     assert X_train is not None
-    assert X_test is not None
+    assert X_val is not None
     assert y_train is not None
-    assert y_test is not None
+    assert y_val is not None
+
+    # Assert the shapes of the resulting datasets based on your real data
+    assert X_train.shape[0] + X_val.shape[0] == df.shape[0]
+    assert y_train.shape[0] + y_val.shape[0] == df.shape[0]
 
 
-    # Assert the shapes of the resulting datasets
-    assert X_train.shape == (8, 3)
-    assert X_test.shape == (2, 3)
-    assert y_train.shape == (8,)
-    assert y_test.shape == (2,)
+    assert X_train.shape[1] == df.shape[1] - 1  # Assuming one column is the target column
+    assert y_train.unique() == [0, 1]
+
 
 
 

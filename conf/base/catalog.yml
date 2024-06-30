@@ -14,7 +14,9 @@ aug_train:
 
 aug_test:
   type: pandas.CSVDataset
-  filepath: data/01_raw/aug_test_drift.csv
+  filepath: data/01_raw/aug_test_drift.csv #change to aug_test_drift to test the drift effect
+
+
 
 #Ingestion
 ingested_data:
@@ -144,7 +146,6 @@ output_plot:
     type: matplotlib.MatplotlibWriter
     filepath: data/08_reporting/shap_plot.png
 
-
 champion_model:
   type: kedro_mlflow.io.artifacts.MlflowArtifactDataset
   dataset:
@@ -152,9 +153,19 @@ champion_model:
     filepath: data/06_models/champion_model.pkl
 
 #Test data preproc
+cleaned_data:
+  type: pandas.CSVDataset
+  filepath: data/03_primary/cleaned_data.csv
+
 preprocessed_batch_data:
   type: pandas.CSVDataset
   filepath: data/03_primary/preprocessed_batch_data.csv
+
+#Batch data engeneering
+feature_engineered_data:
+  type: pandas.CSVDataset
+  filepath: data/03_primary/feature_engineered_data.csv
+
 
 #Final predictions
 
@@ -169,12 +180,6 @@ df_with_predict:
 predict_describe:
   type: pickle.PickleDataset
   filepath: data/08_reporting/predict_describe.pkl
-
-
-#Batch data engeneering
-feature_engineered_data:
-  type: pandas.CSVDataset
-  filepath: data/03_primary/preprocessed_batch_data.csv
 
 
 drift_result:

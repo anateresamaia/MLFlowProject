@@ -10,6 +10,7 @@ warnings.filterwarnings("ignore", category=Warning)
 import mlflow
 from sklearn.metrics import accuracy_score, f1_score
 from sklearn.linear_model import LogisticRegression
+from sklearn.ensemble import GradientBoostingClassifier
 import shap
 import matplotlib.pyplot as plt
 
@@ -31,8 +32,10 @@ def model_train(X_train_final: pd.DataFrame,
 
     Returns:
     --
-        model (pickle): Trained models.
-        scores (json): Trained model metrics.
+        model (pickle): Trained model.
+        columns (list): List of feature columns.
+        results_dict (dict): Dictionary containing model metrics.
+        plt (matplotlib.pyplot): Plot object.
     """
 
     # enable autologging
@@ -102,6 +105,7 @@ def model_train(X_train_final: pd.DataFrame,
 
     shap.initjs()
     # calculate shap values and plot summary
-    shap.summary_plot(shap_values, X_train_final, feature_names=X_train_final.columns, show = False)
+    shap.summary_plot(shap_values, X_train_final, feature_names=X_train_final.columns, show=False)
+
 
     return model, X_train_final.columns, results_dict, plt

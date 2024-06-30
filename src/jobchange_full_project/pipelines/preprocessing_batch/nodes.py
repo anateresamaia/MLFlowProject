@@ -59,15 +59,14 @@ def clean_data(data: pd.DataFrame) -> Tuple[pd.DataFrame, Dict]:
 
     # Describe the data after transformation
     describe_to_dict_verified = df_transformed.describe(include='all').to_dict()
+    cleaned_data = df_transformed
 
-
-
-    return df_transformed, describe_to_dict_verified
+    return cleaned_data, describe_to_dict_verified
 
 def experience_(data):
     def experience_bin(exp):
         if pd.isna(exp):
-            return 'NaN'
+            return 'Unknown'
         elif exp == '>20':
             return '>20'
         elif exp == '<1':
@@ -83,6 +82,8 @@ def experience_(data):
             elif exp <= 20:
                 return '16-20'
 
+     # Fill NaNs with a placeholder before binning
+    data['experience'].fillna('Unknown', inplace=True)
     data['experience_bin'] = data['experience'].apply(experience_bin)
     return data
 
@@ -118,7 +119,9 @@ def feature_engineer(data: pd.DataFrame) -> pd.DataFrame:
     data.drop(['experience', 'city_development_index', 'training_hours'], axis=1, inplace=True)
     print("Data Types:\n", data.dtypes)
     print("\nColumn Names:\n", data.columns.tolist())
-    return data
+    feature_engineered_data = data
+
+    return feature_engineered_data
 
 
 def additional_preprocessing(data: pd.DataFrame, encoder: ce.TargetEncoder, scaler: MinMaxScaler, knn_imputer: KNNImputer,
@@ -143,6 +146,8 @@ def additional_preprocessing(data: pd.DataFrame, encoder: ce.TargetEncoder, scal
 
     imputed_data = knn_imputer.transform(data[columns_to_impute])
     data[columns_to_impute] = imputed_data  # Update the data with imputed values
+
+
     #Feature Selection
     columns_to_drop = ['gender', 'relevent_experience', 'major_discipline', 'city_development_index_bin']
 
