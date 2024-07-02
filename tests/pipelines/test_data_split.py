@@ -29,7 +29,7 @@ def test_split_data():
     assert y_train.shape[0] + y_val.shape[0] == df.shape[0]
 
 
-    assert X_train.shape[1] == df.shape[1] - 1  # Assuming one column is the target column
+    assert X_train.shape[1] == df.shape[1] - 1
     assert y_train.unique() == [0, 1]
 
 

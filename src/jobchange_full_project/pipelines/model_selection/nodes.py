@@ -21,9 +21,9 @@ logger = logging.getLogger(__name__)
 
 
 def model_selection(X_train: pd.DataFrame,
-                    X_test: pd.DataFrame,
+                    X_val: pd.DataFrame,
                     y_train: pd.DataFrame,
-                    y_test: pd.DataFrame,
+                    y_val: pd.DataFrame,
                     champion_dict: Dict[str, Any],
                     champion_model: pickle.Pickler,
                     parameters: Dict[str, Any]) -> Any:
@@ -62,7 +62,7 @@ def model_selection(X_train: pd.DataFrame,
             mlflow.sklearn.autolog(log_model_signatures=True, log_input_examples=True)
             y_train = np.ravel(y_train)
             model.fit(X_train, y_train)
-            initial_results[model_name] = model.score(X_test, y_test)
+            initial_results[model_name] = model.score(X_val, y_val)
             run_id = mlflow.last_active_run().info.run_id
             logger.info(f"Logged model: {model_name} in run {run_id}")
 
@@ -81,7 +81,7 @@ def model_selection(X_train: pd.DataFrame,
         best_model = random_search.best_estimator_
 
     logger.info(f"Hypertuned model score: {random_search.best_score_}")
-    pred_score = accuracy_score(y_test, best_model.predict(X_test))
+    pred_score = accuracy_score(y_val, best_model.predict(X_val))
 
     if champion_dict['val_score'] < pred_score:
         logger.info(

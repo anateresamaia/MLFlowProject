@@ -1,0 +1,5 @@
+{
+  "classifier": "GradientBoostingClassifier",
+  "train_score": 0.5869594686186796,
+  "val_score": 0.5824524312896405
+}

@@ -9,7 +9,7 @@ from src.jobchange_full_project.pipelines.preprocessing_initial.nodes import cle
 def test_clean_date_type():
     df = pd.read_csv("./data/02_intermediate/ingested_data.csv")
     df_transformed, describe_to_dict_verified = clean_data(df)
-    isinstance(describe_to_dict_verified, dict)
+    assert isinstance(describe_to_dict_verified, dict)
 
 def test_clean_date_null():
     df = pd.read_csv("./data/02_intermediate/ingested_data.csv")
